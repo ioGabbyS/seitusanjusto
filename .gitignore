@@ -8,3 +8,4 @@ dist/
 .agent/
 .idea/
 .vscode/
+.env*.local

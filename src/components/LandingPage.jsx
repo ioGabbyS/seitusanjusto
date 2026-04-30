@@ -165,7 +165,7 @@ export default function LandingPage() {
             <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'bg-white/80 dark:bg-slate-950/80 backdrop-blur-xl py-3 shadow-lg' : 'bg-transparent py-6'}`}>
                 <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
                     <div className="flex items-center gap-2">
-                        <img src="/logosanjusto.png" alt={`${tenant.franchiseName} Logo`} className="h-10 w-10 object-contain" />
+                        <img src="/logo_sanjusto_v1.png" alt={`${tenant.franchiseName} Logo`} className="h-10 w-10 object-contain" />
                         <span className={`font-black text-2xl tracking-tighter ${scrolled ? 'text-slate-900 dark:text-white' : 'text-slate-900 dark:text-white'}`}>{tenant.shortName.toUpperCase()}</span>
                     </div>
 
@@ -311,7 +311,7 @@ export default function LandingPage() {
                     <div className="relative animate-in fade-in zoom-in duration-1000">
                         <div className="absolute -inset-10 bg-gradient-to-tr from-brand-200/40 to-amber-200/40 dark:from-brand-500/20 dark:to-amber-500/20 rounded-[4rem] blur-3xl opacity-50 -z-10 animate-pulse"></div>
                         <img
-                            src="/sanjusto2.png"
+                            src="/sanjusto_main_v1.png"
                             alt="Main Logo"
                             className="w-full max-w-md mx-auto drop-shadow-2xl hover:scale-105 transition-transform duration-700 pointer-events-none"
                         />
