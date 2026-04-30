@@ -1,16 +1,16 @@
 @echo off
 echo =================================================
-echo   ACTUALIZADOR RAPIDO SAN JUSTO (v2.1)
+echo   ACTUALIZADOR RAPIDO SAN JUSTO (v2.2)
 echo =================================================
 echo.
 echo [1/3] Guardando cambios locales...
 git add .
-git commit -m "update branding and access"
+git commit -m "fix branding and access button"
 
 echo.
 echo [2/3] Sincronizando con la nube (Git)...
-echo (Subiendo desde rama dev...)
-git push origin dev --force
+echo (Subiendo desde rama main...)
+git push origin main --force
 
 echo.
 echo [3/3] Desplegando en Vercel...
