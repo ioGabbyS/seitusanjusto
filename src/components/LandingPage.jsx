@@ -261,7 +261,7 @@ export default function LandingPage() {
                             <Star size={14} className="fill-current" /> FRANQUICIA OFICIAL SEI TU
                         </div>
                         <h1 className={`${displayTitleSize} font-black text-slate-900 dark:text-white leading-[0.85] mb-8 tracking-tighter`}>
-                            El helado <br /> que más <span className="text-brand-500">amás.</span>
+                            BIENVENIDOS <br /> A <span className="text-brand-500">SAN JUSTO.</span>
                         </h1>
                         <p className="text-xl text-slate-500 dark:text-slate-400 leading-relaxed mb-6 max-w-lg font-medium">
                             Disfrutá de la calidad Sei Tu en {tenant.location}. Sabores inolvidables, momentos compartidos y el café que elegís todos los días.
