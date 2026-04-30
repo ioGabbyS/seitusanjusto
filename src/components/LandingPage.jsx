@@ -197,12 +197,6 @@ export default function LandingPage() {
                         >
                             ACCESO CLUB
                         </a>
-                        <a
-                            href="#/login"
-                            className="border-2 border-slate-900 dark:border-white text-slate-900 dark:text-white px-6 py-2 rounded-full font-black text-sm tracking-widest hover:bg-slate-900 hover:text-white dark:hover:bg-white dark:hover:text-slate-900 transition-all"
-                        >
-                            ADMINISTRACIÓN
-                        </a>
                     </div>
 
                     {/* Mobile Toggle */}
