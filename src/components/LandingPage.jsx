@@ -773,14 +773,26 @@ export default function LandingPage() {
                         </div>
                     </div>
 
-                    <div className="pt-12 border-t border-slate-800 flex flex-col md:flex-row justify-between items-center gap-6 text-[10px] font-black uppercase tracking-[0.1em]">
-                        <span>© 2026 {tenant.franchiseName.toUpperCase()} — TODOS LOS DERECHOS RESERVADOS</span>
-                        <div className="flex gap-8">
+                    <div className="pt-12 border-t border-slate-800 flex flex-col items-center gap-8 text-[10px] font-black uppercase tracking-[0.1em] relative">
+                        <div className="absolute left-0 bottom-12 md:bottom-0">
+                            <a
+                                href="#/login"
+                                className="p-2 text-slate-700 hover:text-brand-500 transition-colors flex items-center gap-2"
+                                title="Acceso Administración"
+                            >
+                                <LayoutDashboard size={14} />
+                                <span className="hidden sm:inline">DASHBOARD</span>
+                            </a>
+                        </div>
+
+                        <div className="flex gap-8 order-1 md:order-2">
                             <a href={socialLinks.instagram} target="_blank" rel="noopener noreferrer" className="hover:text-pink-500 transition-colors">Instagram</a>
                             <a href={socialLinks.tiktok} target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">TikTok</a>
                             <a href={socialLinks.facebook} target="_blank" rel="noopener noreferrer" className="hover:text-blue-500 transition-colors">Facebook</a>
                             <a href={`https://wa.me/${socialLinks.whatsapp}`} target="_blank" rel="noopener noreferrer" className="hover:text-green-500 transition-colors">WhatsApp</a>
                         </div>
+
+                        <span className="order-2 md:order-1 opacity-50">© 2026 {tenant.franchiseName.toUpperCase()} — TODOS LOS DERECHOS RESERVADOS</span>
                     </div>
                 </div>
             </footer>
