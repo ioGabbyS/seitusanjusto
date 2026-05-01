@@ -2,7 +2,7 @@ import { createClient } from '@supabase/supabase-js';
 
 // ESTO ES EXCLUSIVO DE SAN JUSTO
 const supabaseUrl = 'https://adkdesaeysijbgmiyywj.supabase.co';
-const supabaseAnonKey = 'sb_publishable_9Kz2Mbfq4NCrFgr0zXw3zA_ALo1Iuvn';
+const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFka2Rlc2FleXNpamJnbWl5eXdqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc1MjEwOTcsImV4cCI6MjA5MzA5NzA5N30.eVN9Ooae5NFnJ0zs-D0Ln42wFidKQjz-V1Mh93nGRh8';
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
