@@ -266,12 +266,12 @@ export default function LandingPage() {
 
                         {/* Cafeteria Branding Section */}
                         <div className="mb-12 p-6 bg-white/50 dark:bg-slate-900/50 backdrop-blur-sm rounded-3xl border border-slate-100 dark:border-slate-800 flex flex-col sm:flex-row items-center gap-6 max-w-md animate-in fade-in slide-in-from-bottom-4 delay-300">
-                            <div className="h-24 w-24 shrink-0 bg-white rounded-2xl p-2 shadow-sm border border-slate-50">
-                                <img src="/hispanos.png" alt="5 Hispanos" className="w-full h-full object-contain" />
+                            <div className="h-24 w-24 shrink-0 bg-brand-500 rounded-2xl flex items-center justify-center p-2 shadow-lg shadow-brand-500/20 text-white">
+                                <Coffee size={48} strokeWidth={1.5} />
                             </div>
                             <div>
-                                <h3 className="text-xs font-black text-brand-500 uppercase tracking-widest mb-1">Cafetería Premium</h3>
-                                <p className="text-xl font-bold text-slate-700 dark:text-slate-200 leading-tight">Desde 1962, el Café más elegido de Argentina.</p>
+                                <h3 className="text-xs font-black text-brand-500 uppercase tracking-widest mb-1">Cafetería de Calidad</h3>
+                                <p className="text-xl font-bold text-slate-700 dark:text-slate-200 leading-tight">Acompañá tu helado con el mejor café expresso.</p>
                             </div>
                         </div>
 
