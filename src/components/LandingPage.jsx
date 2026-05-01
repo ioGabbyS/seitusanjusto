@@ -192,15 +192,6 @@ export default function LandingPage() {
                             </button>
                         ))}
                         <a
-                            href={tenant.social.googleMaps}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="flex items-center gap-2 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 px-5 py-2.5 rounded-full font-black text-sm tracking-widest hover:bg-slate-200 dark:hover:bg-slate-700 transition-all shadow-sm"
-                        >
-                            <MapPin size={16} className="text-red-500" />
-                            CÓMO LLEGAR
-                        </a>
-                        <a
                             href="#/portal"
                             className="bg-brand-500 text-white px-6 py-2.5 rounded-full font-black text-sm tracking-widest hover:bg-brand-600 transition-all hover:-translate-y-0.5 active:translate-y-0 shadow-lg shadow-brand-500/20"
                         >
@@ -244,15 +235,6 @@ export default function LandingPage() {
                                     {section.label}
                                 </button>
                             ))}
-                            <a
-                                href={tenant.social.googleMaps}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="flex items-center justify-center gap-3 bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-100 p-4 rounded-2xl font-black tracking-widest uppercase shadow-md"
-                            >
-                                <MapPin size={20} className="text-red-500" />
-                                CÓMO LLEGAR
-                            </a>
                             <a
                                 href="#/portal"
                                 onClick={() => setIsMenuOpen(false)}
@@ -776,11 +758,20 @@ export default function LandingPage() {
                         <div className="grid grid-cols-2 gap-8 col-span-1 md:col-span-2">
                             <div>
                                 <h4 className="text-white font-black text-xs uppercase tracking-[0.2em] mb-6">Ubicación</h4>
-                                <p className="text-sm leading-relaxed">
+                                <p className="text-sm leading-relaxed mb-6">
                                     Av. Pte. Dr. A. U. Illia 2467<br />
                                     San Justo, Provincia de Buenos Aires<br />
                                     Argentina
                                 </p>
+                                <a
+                                    href={tenant.social.googleMaps}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-slate-800 text-white font-black text-[10px] tracking-widest uppercase hover:bg-slate-700 transition-all shadow-xl shadow-black/20 group"
+                                >
+                                    <MapPin size={16} className="text-red-500 group-hover:scale-110 transition-transform" />
+                                    Cómo llegar
+                                </a>
                             </div>
                             <div>
                                 <h4 className="text-white font-black text-xs uppercase tracking-[0.2em] mb-6">Horarios</h4>
