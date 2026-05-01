@@ -21,6 +21,7 @@ export const tenant = {
         tiktok: 'seitu_san_justo',
         facebook: 'seitu_san_justo',
         whatsapp: '541171579903',
+        googleMaps: 'https://maps.app.goo.gl/zSaNgdcJkGRP49N26'
     },
     get instagramUrl() { return `https://instagram.com/${this.social.instagram}`; },
     get tiktokUrl() { return `https://tiktok.com/@${this.social.tiktok}`; },

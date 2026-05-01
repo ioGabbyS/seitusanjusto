@@ -192,6 +192,15 @@ export default function LandingPage() {
                             </button>
                         ))}
                         <a
+                            href={tenant.social.googleMaps}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center gap-2 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 px-5 py-2.5 rounded-full font-black text-sm tracking-widest hover:bg-slate-200 dark:hover:bg-slate-700 transition-all shadow-sm"
+                        >
+                            <MapPin size={16} className="text-red-500" />
+                            CÓMO LLEGAR
+                        </a>
+                        <a
                             href="#/portal"
                             className="bg-brand-500 text-white px-6 py-2.5 rounded-full font-black text-sm tracking-widest hover:bg-brand-600 transition-all hover:-translate-y-0.5 active:translate-y-0 shadow-lg shadow-brand-500/20"
                         >
@@ -235,6 +244,15 @@ export default function LandingPage() {
                                     {section.label}
                                 </button>
                             ))}
+                            <a
+                                href={tenant.social.googleMaps}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="flex items-center justify-center gap-3 bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-100 p-4 rounded-2xl font-black tracking-widest uppercase shadow-md"
+                            >
+                                <MapPin size={20} className="text-red-500" />
+                                CÓMO LLEGAR
+                            </a>
                             <a
                                 href="#/portal"
                                 onClick={() => setIsMenuOpen(false)}
