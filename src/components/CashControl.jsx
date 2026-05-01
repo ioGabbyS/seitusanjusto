@@ -382,25 +382,8 @@ const OpenTurnView = ({ sessions, openSession, forceSyncSessions, setSelectedSes
                             Historial Reciente
                         </h3>
                         <div className="flex gap-2">
-                            <button
-                                onClick={async () => {
-                                    setIsSyncing(true);
-                                    const res = await forceSyncSessions();
-                                    setIsSyncing(false);
-                                    if (res.success) {
-                                        alert(`✅ Sincronización completa. Se subieron ${res.count} turnos.`);
-                                    } else {
-                                        alert(`❌ Error al sincronizar: ${res.error}`);
-                                    }
-                                }}
-                                disabled={isSyncing}
-                                className={`flex items-center gap-2 px-4 py-2 rounded-xl font-bold transition-all shadow-sm ${isSyncing ? 'bg-slate-100 text-slate-400 cursor-not-allowed' : 'bg-amber-500 hover:bg-amber-600 text-white active:scale-95'}`}
-                            >
-                                <RefreshCw size={18} className={isSyncing ? 'animate-spin' : ''} />
-                                {isSyncing ? 'Subiendo...' : 'FORZAR SUBIDA DE DATOS'}
-                            </button>
-                            <div className="text-[10px] text-slate-400 dark:text-slate-600 max-w-[150px] leading-tight italic">
-                                Usa este botón si los datos no coinciden entre computadoras.
+                            <div className="text-[10px] text-slate-400 dark:text-slate-600 max-w-[250px] leading-tight italic text-right">
+                                Historial de los últimos turnos finalizados en esta sucursal.
                             </div>
                         </div>
                     </div>

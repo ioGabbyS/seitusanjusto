@@ -34,7 +34,7 @@ export default function Layout({ children, activeTab, onTabChange, onLogout, use
             {/* Sidebar Desktop */}
             <aside className="hidden md:flex flex-col w-20 bg-slate-900 border-r border-slate-800 text-white min-h-screen shadow-xl z-20 items-center">
                 <div className="p-4 border-b border-slate-800 flex flex-col items-center gap-3">
-                    <img src="/logofinal.png" alt="Logo" className="w-12 h-12 object-contain" title="Seitu Castillo" />
+                    <img src="/logosanjusto.png" alt="Logo" className="w-12 h-12 object-contain" title="Sei Tu San Justo" />
 
                     {/* Botón de Sincronización Manual */}
                     <button

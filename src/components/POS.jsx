@@ -385,6 +385,7 @@ export default function POS() {
             setObservations('');
             setSelectedCustomer(null);
             setCustomerSearch('');
+            setGuestName('');
             setPointsToRedeem(0);
             setShouldInvoiceFiscal(false);
             setCustomerMode("club"); // Reset to default
@@ -436,14 +437,7 @@ export default function POS() {
                                 autoFocus
                             />
                         </div>
-                        <button
-                            onClick={() => loadData()}
-                            disabled={loading}
-                            title="Actualizar Datos (Sincronizar)"
-                            className="w-10 h-10 p-2 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-400 hover:text-brand-500 hover:border-brand-500 transition-all active:scale-95 disabled:opacity-50 flex items-center justify-center shrink-0"
-                        >
-                            <History size={20} className={loading ? 'animate-spin' : ''} />
-                        </button>
+                        {/* Botón de sincronización removido por ser duplicado */}
                         <button
                             onClick={addExpenseItem}
                             className="w-10 h-10 bg-red-100 dark:bg-red-900/40 text-red-700 dark:text-red-400 font-bold rounded-lg hover:bg-red-200 dark:hover:bg-red-900/60 transition-colors flex items-center justify-center shrink-0"
