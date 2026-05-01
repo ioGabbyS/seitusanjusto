@@ -307,7 +307,7 @@ export default function LandingPage() {
                         <img
                             src="/sanjusto2.png"
                             alt="Main Logo"
-                            className="w-full max-w-md mx-auto drop-shadow-2xl hover:scale-105 transition-transform duration-700 pointer-events-none"
+                            className="w-full max-w-md mx-auto drop-shadow-2xl hover:scale-105 transition-transform duration-700 pointer-events-none mix-blend-multiply dark:mix-blend-screen"
                         />
                     </div>
                 </div>
