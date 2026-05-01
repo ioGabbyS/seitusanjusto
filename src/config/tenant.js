@@ -17,9 +17,9 @@ export const tenant = {
     establishedYear: '2026',
     adminEmail: 'seitusanjusto@gmail.com',
     social: {
-        instagram: 'seitu_san_justo',
-        tiktok: 'seitu_san_justo',
-        facebook: 'seitu_san_justo',
+        instagram: 'seitu_sanjusto',
+        tiktok: 'seitu_sanjusto',
+        facebook: 'seitu_sanjusto',
         whatsapp: '541171579903',
     },
     get instagramUrl() { return `https://instagram.com/${this.social.instagram}`; },

@@ -779,11 +779,27 @@ export default function LandingPage() {
                             </a>
                         </div>
 
-                        <div className="flex gap-8 order-1 md:order-2">
-                            <a href={socialLinks.instagram} target="_blank" rel="noopener noreferrer" className="hover:text-pink-500 transition-colors">Instagram</a>
-                            <a href={socialLinks.tiktok} target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">TikTok</a>
-                            <a href={socialLinks.facebook} target="_blank" rel="noopener noreferrer" className="hover:text-blue-500 transition-colors">Facebook</a>
-                            <a href={`https://wa.me/${socialLinks.whatsapp}`} target="_blank" rel="noopener noreferrer" className="hover:text-green-500 transition-colors">WhatsApp</a>
+                        <div className="flex flex-wrap justify-center gap-4 order-1 md:order-2">
+                            <a
+                                href={socialLinks.instagram}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="flex items-center gap-2 px-6 py-2.5 rounded-xl bg-gradient-to-tr from-[#f09433] via-[#dc2743] to-[#bc1888] text-white font-black text-[10px] tracking-widest uppercase hover:scale-110 shadow-lg shadow-pink-500/20 transition-all group"
+                            >
+                                <Instagram size={14} className="group-hover:rotate-12 transition-transform" />
+                                @{tenant.social.instagram}
+                            </a>
+                            <a
+                                href={socialLinks.tiktok}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="flex items-center gap-2 px-6 py-2.5 rounded-xl bg-black text-white font-black text-[10px] tracking-widest uppercase hover:scale-110 shadow-lg shadow-white/5 transition-all group"
+                            >
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" className="group-hover:-rotate-12 transition-transform">
+                                    <path d="M12.525.02c1.31-.02 2.61-.01 3.91-.01.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.59-1.01-.01 2.62-.02 5.24-.04 7.86-.02 2.04-.6 4.12-1.93 5.71-1.4 1.75-3.69 2.58-5.88 2.37-2.31-.22-4.46-1.63-5.55-3.69-1.34-2.48-1.12-5.74.56-8 1.14-1.55 3.01-2.5 4.93-2.5.42 0 .84.05 1.25.13v4.16c-.43-.16-.9-.24-1.36-.21-1.34.07-2.61.94-3.04 2.21-.49 1.4-.1 3.11.97 4.13 1.01 1.01 2.6 1.25 3.86.6 1.04-.54 1.66-1.66 1.76-2.82.04-1.11.02-2.22.02-3.33V.02z" />
+                                </svg>
+                                TIKTOK
+                            </a>
                         </div>
 
                         <span className="order-2 md:order-1 opacity-50">© 2026 {tenant.franchiseName.toUpperCase()} — TODOS LOS DERECHOS RESERVADOS</span>
