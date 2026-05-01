@@ -3500,14 +3500,14 @@ function useStoreSource() {
             const filePath = `${fileName}`;
 
             const { data, error } = await supabase.storage
-                .from('images')
+                .from('posts')
                 .upload(filePath, file);
 
             if (error) throw error;
 
             // Get Public URL
             const { data: { publicUrl } } = supabase.storage
-                .from('images')
+                .from('posts')
                 .getPublicUrl(filePath);
 
             return publicUrl;
