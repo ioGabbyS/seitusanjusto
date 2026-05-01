@@ -20,7 +20,7 @@ export const tenant = {
         instagram: 'seitu_san_justo',
         tiktok: 'seitu_san_justo',
         facebook: 'seitu_san_justo',
-        whatsapp: '5491100000000',
+        whatsapp: '541171579903',
     },
     get instagramUrl() { return `https://instagram.com/${this.social.instagram}`; },
     get tiktokUrl() { return `https://tiktok.com/@${this.social.tiktok}`; },
