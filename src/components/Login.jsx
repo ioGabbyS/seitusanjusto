@@ -6,7 +6,7 @@ import { tenant } from '../config/tenant';
 
 export default function Login({ onLoginSuccess }) {
     const { staffUsers } = useStore();
-    const [username, setUsername] = useState('');
+    const [username, setUsername] = useState(tenant.adminEmail);
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const [isLoading, setIsLoading] = useState(false);
@@ -31,10 +31,10 @@ export default function Login({ onLoginSuccess }) {
         try {
             // LOGIN PERSONAL LOCAL (Bypass dinámico)
             const staff = staffUsers.find(u => u.password === password);
-            // Bypass para helados2026 (Personal) y Ccasares776 (Admin)
-            if (password === 'helados2026' || password === 'Ccasares776' || staff) {
-                const name = password === 'Ccasares776' ? 'Admin Global' : (staff ? staff.name : 'Personal Local');
-                const role = password === 'Ccasares776' ? 'admin' : 'stock';
+            // Bypass para helados2026 (Personal) y Ccasares776/sanjusto2467 (Admin)
+            if (password === 'helados2026' || password === 'Ccasares776' || password === 'sanjusto2467' || staff) {
+                const name = (password === 'Ccasares776' || password === 'sanjusto2467') ? 'Admin Master' : (staff ? staff.name : 'Personal Local');
+                const role = (password === 'Ccasares776' || password === 'sanjusto2467') ? 'admin' : 'stock';
 
                 localStorage.setItem('seitu_auth', 'true');
                 localStorage.setItem('seitu_user', name);
