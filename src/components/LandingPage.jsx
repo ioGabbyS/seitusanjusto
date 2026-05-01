@@ -752,9 +752,9 @@ export default function LandingPage() {
                             <div>
                                 <h4 className="text-white font-black text-xs uppercase tracking-[0.2em] mb-6">Ubicación</h4>
                                 <p className="text-sm leading-relaxed">
-                                    Dirección San Justo<br />
-                                    San Justo<br />
-                                    Buenos Aires, Argentina
+                                    Av. Pte. Dr. A. U. Illia 2467<br />
+                                    San Justo, Provincia de Buenos Aires<br />
+                                    Argentina
                                 </p>
                             </div>
                             <div>

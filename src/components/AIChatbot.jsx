@@ -4,7 +4,7 @@ import { MessageCircle, X, Send, Bot, User, Sparkles } from 'lucide-react';
 export default function AIChatbot() {
     const [isOpen, setIsOpen] = useState(false);
     const [messages, setMessages] = useState([
-        { role: 'assistant', content: '¡Hola! 🎉 Soy Tucito 🐲✨ ¿Cómo vienen esos últimos días de Carnaval? 🎭 Ya falta poquito para el cole, ¡te espero para un helado bien fresco antes de empezar las clases! 🍦📚' }
+        { role: 'assistant', content: '¡Hola! 🎉 Soy Tucito 🐲✨ de la sucursal San Justo. ¡Los esperamos en Av. Illia 2467 con los más ricos desayunos, meriendas y el mejor helado de Argentina! 🍦☕️🥐 ¿En qué puedo ayudarte hoy?' }
     ]);
     const [input, setInput] = useState('');
     const [isLoading, setIsLoading] = useState(false);
