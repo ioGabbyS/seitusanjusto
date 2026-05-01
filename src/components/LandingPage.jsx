@@ -671,7 +671,14 @@ export default function LandingPage() {
                             <p className="mt-4 text-slate-500 dark:text-slate-400 font-bold tracking-widest uppercase text-[10px]">Actualidad, promociones y momentos dulces</p>
                         </div>
                         <div className="flex flex-wrap gap-4">
-                            <Instagram size={16} /> @{tenant.social.instagram}
+                            <a
+                                href={socialLinks.instagram}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="px-6 py-3 bg-gradient-to-tr from-[#f09433] via-[#dc2743] to-[#bc1888] text-white rounded-xl font-black text-[10px] tracking-widest hover:scale-105 transition-all shadow-xl shadow-pink-500/20 active:scale-95 flex items-center gap-2 uppercase"
+                            >
+                                <Instagram size={16} /> @{tenant.social.instagram}
+                            </a>
                             <a
                                 href={socialLinks.tiktok}
                                 target="_blank"
