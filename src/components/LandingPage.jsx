@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Star, Gift, ShoppingBag, ArrowRight, X, ChevronRight, LayoutDashboard, UtensilsCrossed, Facebook, Instagram, Trophy, Sun, Moon, Menu, Clock, Heart, Users, MapPin } from 'lucide-react';
+import { Star, Gift, ShoppingBag, ArrowRight, X, ChevronRight, LayoutDashboard, UtensilsCrossed, Facebook, Instagram, Trophy, Sun, Moon, Menu, Clock, Heart, Users, MapPin, Coffee } from 'lucide-react';
 import { supabase } from '../utils/supabaseClient';
 import { useStore } from '../hooks/useStore';
 import { tenant } from '../config/tenant';
