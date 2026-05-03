@@ -2,8 +2,7 @@ export default async function handler(req, res) {
     if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
     const { messages, branch } = req.body;
-    // Forzamos la KEY directamente para evitar problemas de configuración en Vercel
-    let KEY_TO_USE = "AIzaSyBvr_lrGV1FdLMkTY58nX1gZAG8rqmvsw8";
+    let RAW_KEY = process.env.GEMINI_API_KEY || process.env.VITE_GEMINI_API_KEY || "";
 
     const isSanJusto = branch === 'sanjusto';
     const BRANCH_NAME = isSanJusto ? "Sei Tu San Justo" : "Sei Tu Castillo";
@@ -111,10 +110,10 @@ REGLAS DE RESPUESTA:
         const data = await response.json();
 
         if (data.error) {
-            if (data.error.code === 429 || data.error.message.toLowerCase().includes('quota')) {
-                throw new Error("QUOTA_EXCEEDED");
-            }
-            throw new Error(data.error.message);
+            console.error("Gemini API Error:", data.error);
+            return res.status(200).json({
+                text: `Tucito tiene un pequeño hipo técnico: ${data.error.message} (Código: ${data.error.code}) [v12.6]`
+            });
         }
 
         const text = data.candidates?.[0]?.content?.parts?.[0]?.text || "Tucito se quedó pensando... 🍦🐉";
