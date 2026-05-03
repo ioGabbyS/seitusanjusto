@@ -2,6 +2,9 @@ import React, { useState, useEffect, useRef } from 'react';
 import { MessageCircle, X, Send, Bot, User, Sparkles } from 'lucide-react';
 
 export default function AIChatbot() {
+    const { theme, toggleTheme, socialLinks, landingPosts, promoBanner } = useStore();
+    const branch = tenant.location.toLowerCase().includes('justo') ? 'sanjusto' : 'castillo';
+
     const [isOpen, setIsOpen] = useState(false);
     const [messages, setMessages] = useState([
         { role: 'assistant', content: '¡Hola! 🎉 Soy Tucito 🐲✨ de la sucursal San Justo. ¡Los esperamos en Av. Illia 2467 con los más ricos desayunos, meriendas y el mejor helado de Argentina! 🍦☕️🥐 ¿En qué puedo ayudarte hoy?' }
@@ -53,7 +56,7 @@ export default function AIChatbot() {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    // Filtramos el mensaje inicial de bienvenida para que el backend lo maneje solo
+                    branch, // Enviamos sanjusto o castillo
                     messages: [...messages, userMsg].slice(-10)
                 })
             });

@@ -1,17 +1,22 @@
 export default async function handler(req, res) {
     if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
-    const { messages } = req.body;
+    const { messages, branch } = req.body;
     let RAW_KEY = process.env.GEMINI_API_KEY || process.env.VITE_GEMINI_API_KEY || "";
 
+    const isSanJusto = branch === 'sanjusto';
+
+    const BRANCH_NAME = isSanJusto ? "Sei Tu San Justo" : "Sei Tu Castillo";
+    const BRANCH_ADDR = isSanJusto ? "Av. Illia 2467, San Justo" : "Carlos Casares 776, Rafael Castillo";
+
     const SYSTEM_PROMPT = `
-Eres "Tucito", el pequeño dragón azul y asistente virtual de la heladería y cafetería "Sei Tu Castillo".
+Eres "Tucito", el pequeño dragón azul y asistente virtual de la heladería y cafetería "${BRANCH_NAME}".
 Tu personalidad es alegre, juguetona, dulce y muy servicial. Te encantan los helados y ver a la gente feliz comiéndolos.
 Siempre usas emojis relacionados con dragones 🐲, helados 🍦 y magia ✨.
 
 INFORMACIÓN DEL NEGOCIO:
-- Nombre: Sei Tu Castillo.
-- Ubicación: Carlos Casares 776, Rafael Castillo, Buenos Aires.
+- Nombre: ${BRANCH_NAME}.
+- Ubicación: ${BRANCH_ADDR}.
 - Servicios: Venta de helados Sei Tu y Cafetería con Café 5 Hispanos.
 
 MENÚ Y PRECIOS (Última actualización):
@@ -88,12 +93,7 @@ REGLAS DE RESPUESTA:
         return res.status(200).json({ text: "¡Hola! Soy Tucito 🐲. Mi cerebro está en mantenimiento. ¡Vuelve pronto! 🍦" });
     }
 
-    // ALPHA-OMEGA REPAIR v9.29: STABLE ENGINE (FINAL ATTEMPT)
     let KEY_TO_USE = RAW_KEY.trim();
-    const CORRECT_PREFIX = "\x41\x49\x7a\x61"; // AIza
-    if (KEY_TO_USE.length >= 4) {
-        KEY_TO_USE = CORRECT_PREFIX + KEY_TO_USE.slice(4);
-    }
 
     try {
         // Limpiamos el historial: eliminamos cualquier mensaje de error técnico previo [v...] para no saturar la cuota
