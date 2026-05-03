@@ -956,7 +956,7 @@ export default function LandingPage() {
                             </button>
                         </div>
 
-                        {/* Banner Image Container */}
+                        {/* Banner Image/Video Container */}
                         <div className="relative aspect-[4/5] sm:aspect-video w-full overflow-hidden group">
                             {promoBanner.url ? (
                                 <a
@@ -965,11 +965,22 @@ export default function LandingPage() {
                                     rel="noopener noreferrer"
                                     className="block w-full h-full"
                                 >
-                                    <img
-                                        src={promoBanner.img}
-                                        alt="Promoción Especial"
-                                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                                    />
+                                    {promoBanner.img.toLowerCase().includes('.mp4') ? (
+                                        <video
+                                            src={promoBanner.img}
+                                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                                            autoPlay
+                                            muted
+                                            loop
+                                            playsInline
+                                        />
+                                    ) : (
+                                        <img
+                                            src={promoBanner.img}
+                                            alt="Promoción Especial"
+                                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                                        />
+                                    )}
                                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center p-8">
                                         <span className="px-6 py-2 bg-white text-rose-600 rounded-full font-bold text-sm flex items-center gap-2 shadow-lg">
                                             Ver más <ChevronRight size={16} />
@@ -977,11 +988,22 @@ export default function LandingPage() {
                                     </div>
                                 </a>
                             ) : (
-                                <img
-                                    src={promoBanner.img}
-                                    alt="Promoción Especial"
-                                    className="w-full h-full object-cover"
-                                />
+                                promoBanner.img.toLowerCase().includes('.mp4') ? (
+                                    <video
+                                        src={promoBanner.img}
+                                        className="w-full h-full object-cover"
+                                        autoPlay
+                                        muted
+                                        loop
+                                        playsInline
+                                    />
+                                ) : (
+                                    <img
+                                        src={promoBanner.img}
+                                        alt="Promoción Especial"
+                                        className="w-full h-full object-cover"
+                                    />
+                                )
                             )}
                         </div>
 

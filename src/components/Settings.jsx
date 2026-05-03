@@ -459,7 +459,7 @@ const SocialManager = () => {
                                 <label className="block text-[10px] font-bold text-slate-500 mb-1">O Subir Foto desde tu equipo</label>
                                 <input
                                     type="file"
-                                    accept="image/*"
+                                    accept="image/*,video/mp4"
                                     onChange={handleFileUpload}
                                     className="text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-[10px] file:font-black file:bg-pink-100 file:text-pink-700 hover:file:bg-pink-200 w-full"
                                 />
@@ -574,7 +574,7 @@ const SocialManager = () => {
                                 <div className="relative">
                                     <input
                                         type="file"
-                                        accept="image/*"
+                                        accept="image/*,video/mp4"
                                         onChange={async (e) => {
                                             const file = e.target.files[0];
                                             if (!file) return;
@@ -583,7 +583,7 @@ const SocialManager = () => {
                                                 const url = await uploadImage(file);
                                                 if (url) setLocalPromo(prev => ({ ...prev, img: url }));
                                             } catch (err) {
-                                                alert("Error al subir imagen");
+                                                alert("Error al subir archivo");
                                             } finally {
                                                 setIsUploading(false);
                                             }
@@ -621,7 +621,18 @@ const SocialManager = () => {
                     <div className="bg-white/50 border-2 border-dashed border-amber-200 rounded-2xl flex flex-col items-center justify-center p-4">
                         {localPromo.img ? (
                             <div className="relative w-full max-w-[200px] aspect-[4/5] rounded-xl overflow-hidden shadow-xl ring-4 ring-white">
-                                <img src={localPromo.img} className="w-full h-full object-cover" alt="Preview" />
+                                {localPromo.img.toLowerCase().includes('.mp4') ? (
+                                    <video
+                                        src={localPromo.img}
+                                        className="w-full h-full object-cover"
+                                        autoPlay
+                                        muted
+                                        loop
+                                        playsInline
+                                    />
+                                ) : (
+                                    <img src={localPromo.img} className="w-full h-full object-cover" alt="Preview" />
+                                )}
                                 {!localPromo.active && (
                                     <div className="absolute inset-0 bg-slate-100/80 backdrop-blur-[2px] flex items-center justify-center text-center p-2">
                                         <span className="text-slate-400 font-bold text-[10px] uppercase tracking-widest rotate-[-15deg]">Desactivado</span>
@@ -631,7 +642,7 @@ const SocialManager = () => {
                         ) : (
                             <div className="text-center p-8">
                                 <Sun size={40} className="mx-auto text-amber-200 mb-2" />
-                                <span className="text-xs text-amber-400 font-medium italic">Sin imagen configurada</span>
+                                <span className="text-xs text-amber-400 font-medium italic">Sin contenido configurado</span>
                             </div>
                         )}
                         <span className="mt-4 text-[10px] font-bold text-amber-800 uppercase tracking-tighter">Vista previa del banner</span>
