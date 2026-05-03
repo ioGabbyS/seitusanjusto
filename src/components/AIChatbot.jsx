@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { MessageCircle, X, Send, Bot, User, Sparkles } from 'lucide-react';
+import { useStore } from '../hooks/useStore';
+import { tenant } from '../config/tenant';
 
 export default function AIChatbot() {
     const { theme, toggleTheme, socialLinks, landingPosts, promoBanner } = useStore();
