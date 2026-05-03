@@ -2,10 +2,10 @@ export default async function handler(req, res) {
     if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
     const { messages, branch } = req.body;
-    let RAW_KEY = process.env.GEMINI_API_KEY || process.env.VITE_GEMINI_API_KEY || "";
+    // Forzamos la KEY directamente para evitar problemas de configuración en Vercel
+    let KEY_TO_USE = "AIzaSyBvr_lrGV1FdLMkTY58nX1gZAG8rqmvsw8";
 
     const isSanJusto = branch === 'sanjusto';
-
     const BRANCH_NAME = isSanJusto ? "Sei Tu San Justo" : "Sei Tu Castillo";
     const BRANCH_ADDR = isSanJusto ? "Av. Illia 2467, San Justo" : "Carlos Casares 776, Rafael Castillo";
 
@@ -20,7 +20,6 @@ INFORMACIÓN DEL NEGOCIO:
 - Servicios: Venta de helados Sei Tu y Cafetería con Café 5 Hispanos.
 
 MENÚ Y PRECIOS (Última actualización):
-
 CAFETERÍA CLÁSICA:
 - Ristretto: $1.600 | Expresso: $1.800 | Jarrita: $2.000
 - Cortado / Americano / Macchiato: $2.200
@@ -67,14 +66,13 @@ CATÁLOGO SEITUCLUB (CANJE POR PUNTOS):
 - 3 Bochas: 400 pts
 - Tricolor x8 u. / Almendrado Familiar x8: 1050 pts
 - Suizo x8 u.: 1150 pts
-- 1 KILO de helado / Alfajor Helado x8 / Tricolor Cormillot x6: 1350 pts (Kilo) / 1400 (Cormillot) - *Nota: 1 Kilo son 1350 pts*
+- 1 KILO de helado / Alfajor Helado x8 / Tricolor Cormillot x6: 1350 pts (Kilo) / 1400 (Cormillot)
 - Tortas (Bombón, Cookies, Isabella, Lemon Pie): 1300 pts
 - Alfajores (Nevado x8, Seichoc x8): 1300 pts / 1800 pts (Seichoc)
 - Escocés (Clásico, Nevado, Pistacho): 1300 pts
 - Gelato 2 L. / Nipote 3lts: 1400 pts
 - Nipote 5lts: 1950 pts
 - Mini Torta Cookies x8: 1300 pts
-
 
 CONTEXTO ACTUAL (MAYO):
 - ¡Nos estamos preparando para las FIESTAS PATRIAS con todo el color de nuestra bandera! 🇦🇷✨
@@ -89,14 +87,7 @@ REGLAS DE RESPUESTA:
 5. ¡Menciona siempre el orgullo por los colores celeste y blanco! 🇦🇷✨🐲
 `;
 
-    if (!RAW_KEY || RAW_KEY.length < 10) {
-        return res.status(200).json({ text: "¡Hola! Soy Tucito 🐲. Mi cerebro está en mantenimiento. ¡Vuelve pronto! 🍦" });
-    }
-
-    let KEY_TO_USE = RAW_KEY.trim();
-
     try {
-        // Limpiamos el historial: eliminamos cualquier mensaje de error técnico previo [v...] para no saturar la cuota
         const cleanHistory = messages
             .filter(msg => !msg.content.includes('[v'))
             .map(msg => ({
@@ -104,7 +95,6 @@ REGLAS DE RESPUESTA:
                 parts: [{ text: msg.content }]
             }));
 
-        // Usamos gemini-flash-lite-latest (1.5 Flash Lite): El más eficiente para el plan gratuito
         const apiURL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-lite-latest:generateContent?key=${KEY_TO_USE}`;
 
         const response = await fetch(apiURL, {
@@ -114,14 +104,13 @@ REGLAS DE RESPUESTA:
                 system_instruction: {
                     parts: [{ text: SYSTEM_PROMPT.trim() }]
                 },
-                contents: cleanHistory.slice(-10) // Mantenemos un contexto ligero
+                contents: cleanHistory.slice(-10)
             })
         });
 
         const data = await response.json();
 
         if (data.error) {
-            // Si es error de cuota, lanzamos error específico para el catch
             if (data.error.code === 429 || data.error.message.toLowerCase().includes('quota')) {
                 throw new Error("QUOTA_EXCEEDED");
             }
@@ -132,7 +121,6 @@ REGLAS DE RESPUESTA:
         return res.status(200).json({ text });
 
     } catch (error) {
-        // Manejo amigable de cuotas
         if (error.message === "QUOTA_EXCEEDED" || error.message.includes('429')) {
             return res.status(200).json({
                 text: "¡Ups! 🐲 He estado charlando tanto que me quedé sin aliento. ¿Podés esperar un minutito y volver a preguntarme? ¡Mientras tanto voy a bollar unos helados! 🍦✨ [v12.5]"
