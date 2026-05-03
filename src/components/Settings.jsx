@@ -308,10 +308,26 @@ const CatalogRestore = () => {
 };
 
 const SocialManager = () => {
-    const { socialLinks, landingPosts, updateSocialLinks, updateLandingPosts, uploadImage } = useStore();
-    const [editingLinks, setEditingLinks] = useState(socialLinks);
+    const {
+        socialLinks,
+        updateSocialLinks,
+        landingPosts,
+        updateLandingPosts,
+        uploadImage,
+        promoBanner,
+        updatePromoBanner
+    } = useStore();
+
+    const [editingLinks, setEditingLinks] = useState({ ...socialLinks });
     const [newPost, setNewPost] = useState({ img: '', label: '', url: '' });
     const [isUploading, setIsUploading] = useState(false);
+
+    // PROMO BANNER STATE
+    const [localPromo, setLocalPromo] = useState(promoBanner || { active: false, img: '', url: '' });
+
+    useEffect(() => {
+        setLocalPromo(promoBanner || { active: false, img: '', url: '' });
+    }, [promoBanner]);
 
     const handleLinkSave = () => {
         updateSocialLinks(editingLinks);
@@ -520,6 +536,106 @@ const SocialManager = () => {
                             </div>
                         </div>
                     ))}
+                </div>
+            </div>
+
+            {/* PROMO BANNER MANAGER */}
+            <div className="p-6 bg-amber-50 border border-amber-200 rounded-xl">
+                <h3 className="font-bold text-amber-800 mb-4 flex items-center gap-2">
+                    <Sun size={20} className="text-amber-600" /> Pop-up Promocional (Ocasional)
+                </h3>
+                <p className="text-xs text-amber-600/80 mb-6 font-medium">Ventana emergente que aparece al entrar a la web. Ideal para anuncios temporales.</p>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {/* Controles */}
+                    <div className="space-y-6">
+                        <div className="flex items-center gap-3">
+                            <button
+                                onClick={() => setLocalPromo({ ...localPromo, active: !localPromo.active })}
+                                className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none ${localPromo.active ? 'bg-amber-600' : 'bg-slate-300'}`}
+                            >
+                                <span className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${localPromo.active ? 'translate-x-6' : 'translate-x-1'}`} />
+                            </button>
+                            <span className="text-sm font-bold text-slate-700">
+                                {localPromo.active ? 'POP-UP ACTIVADO' : 'POP-UP DESACTIVADO'}
+                            </span>
+                        </div>
+
+                        <div>
+                            <label className="block text-[10px] font-black text-amber-800 uppercase tracking-widest mb-2">Imagen del Banner</label>
+                            <div className="flex flex-col gap-2">
+                                <input
+                                    type="text"
+                                    value={localPromo.img}
+                                    onChange={e => setLocalPromo({ ...localPromo, img: e.target.value })}
+                                    className="w-full px-3 py-2 rounded-lg border border-amber-200 text-sm bg-white"
+                                    placeholder="https://..."
+                                />
+                                <div className="relative">
+                                    <input
+                                        type="file"
+                                        accept="image/*"
+                                        onChange={async (e) => {
+                                            const file = e.target.files[0];
+                                            if (!file) return;
+                                            setIsUploading(true);
+                                            try {
+                                                const url = await uploadImage(file);
+                                                if (url) setLocalPromo(prev => ({ ...prev, img: url }));
+                                            } catch (err) {
+                                                alert("Error al subir imagen");
+                                            } finally {
+                                                setIsUploading(false);
+                                            }
+                                        }}
+                                        className="text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-[10px] file:font-black file:bg-amber-100 file:text-amber-700 hover:file:bg-amber-200 w-full"
+                                    />
+                                    {isUploading && <div className="absolute right-3 bottom-2 animate-spin text-amber-500"><RefreshCw size={14} /></div>}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label className="block text-[10px] font-black text-amber-800 uppercase tracking-widest mb-1">Destino del Click (Opcional)</label>
+                            <input
+                                type="text"
+                                value={localPromo.url}
+                                onChange={e => setLocalPromo({ ...localPromo, url: e.target.value })}
+                                className="w-full px-3 py-2 rounded-lg border border-amber-200 text-sm bg-white"
+                                placeholder="Link a WhatsApp, Instagram, etc."
+                            />
+                        </div>
+
+                        <button
+                            onClick={() => {
+                                updatePromoBanner(localPromo);
+                                alert("✅ Pop-up actualizado correctamente!");
+                            }}
+                            className="w-full py-3 bg-amber-600 text-white rounded-xl font-bold hover:bg-amber-700 transition-all shadow-md shadow-amber-200"
+                        >
+                            GUARDAR CONFIGURACIÓN POP-UP
+                        </button>
+                    </div>
+
+                    {/* Preview */}
+                    <div className="bg-white/50 border-2 border-dashed border-amber-200 rounded-2xl flex flex-col items-center justify-center p-4">
+                        {localPromo.img ? (
+                            <div className="relative w-full max-w-[200px] aspect-[4/5] rounded-xl overflow-hidden shadow-xl ring-4 ring-white">
+                                <img src={localPromo.img} className="w-full h-full object-cover" alt="Preview" />
+                                {!localPromo.active && (
+                                    <div className="absolute inset-0 bg-slate-100/80 backdrop-blur-[2px] flex items-center justify-center text-center p-2">
+                                        <span className="text-slate-400 font-bold text-[10px] uppercase tracking-widest rotate-[-15deg]">Desactivado</span>
+                                    </div>
+                                )}
+                            </div>
+                        ) : (
+                            <div className="text-center p-8">
+                                <Sun size={40} className="mx-auto text-amber-200 mb-2" />
+                                <span className="text-xs text-amber-400 font-medium italic">Sin imagen configurada</span>
+                            </div>
+                        )}
+                        <span className="mt-4 text-[10px] font-bold text-amber-800 uppercase tracking-tighter">Vista previa del banner</span>
+                    </div>
                 </div>
             </div>
         </div>

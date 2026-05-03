@@ -90,6 +90,11 @@ function useStoreSource() {
         return localStorage.getItem('seitu_event_auto_approve_martina') === 'true';
     });
 
+    const [promoBanner, setPromoBanner] = useState(() => {
+        const saved = localStorage.getItem('seitu_promo_banner');
+        return JSON.parse(saved || JSON.stringify({ active: false, img: '', url: '' }));
+    });
+
     // THEME FIX v3: Use new key so we ignore old corrupt data
     const [theme, setTheme] = useState(() => {
         try {
@@ -2471,6 +2476,17 @@ function useStoreSource() {
         }
     };
 
+    const updatePromoBanner = (newBanner) => {
+        setPromoBanner(newBanner);
+        safeStorageSet('seitu_promo_banner', JSON.stringify(newBanner));
+
+        if (supabase) {
+            supabase.from('settings').upsert({ id: 'promo_banner', configuration: newBanner }).then(({ error }) => {
+                if (error) console.error('Error syncing promo banner:', error);
+            });
+        }
+    };
+
     const addEventPostPaloma = async (post) => {
         let latestPosts = eventPostsPaloma;
         let latestAuto = autoApprovePaloma;
@@ -3645,6 +3661,8 @@ function useStoreSource() {
         landingPosts,
         updateSocialLinks,
         updateLandingPosts,
+        promoBanner,
+        updatePromoBanner,
         eventPostsPaloma,
         addEventPostPaloma,
         updateEventPostPaloma,

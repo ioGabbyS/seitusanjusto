@@ -12,7 +12,8 @@ export default function LandingPage() {
     const [viewNosotros, setViewNosotros] = useState(false);
     const [viewPuntos, setViewPuntos] = useState(false);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
-    const { theme, toggleTheme, socialLinks, landingPosts } = useStore();
+    const { theme, toggleTheme, socialLinks, landingPosts, promoBanner } = useStore();
+    const [showPromo, setShowPromo] = useState(false);
     const [rewards, setRewards] = useState([]);
 
     const isSanJusto = tenant.location.toLowerCase().includes('justo');
@@ -51,11 +52,23 @@ export default function LandingPage() {
         };
         loadRewards();
 
+        // Show promo banner after a short delay if active
+        if (promoBanner?.active && promoBanner?.img) {
+            const timer = setTimeout(() => {
+                setShowPromo(true);
+            }, 1000);
+            return () => {
+                clearTimeout(timer);
+                window.removeEventListener('scroll', handleScroll);
+                window.removeEventListener('hashchange', handleHash);
+            };
+        }
+
         return () => {
             window.removeEventListener('scroll', handleScroll);
             window.removeEventListener('hashchange', handleHash);
         };
-    }, []);
+    }, [promoBanner]);
 
     useEffect(() => {
         const slider = document.getElementById('rewards-slider');
@@ -920,6 +933,71 @@ export default function LandingPage() {
                                 </button>
                             </div>
                         </div>
+                    </div>
+                </div>
+            )}
+
+            {/* PROMO BANNER MODAL */}
+            {showPromo && promoBanner?.active && (
+                <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 animate-in fade-in duration-300">
+                    <div
+                        className="absolute inset-0 bg-black/80 backdrop-blur-sm"
+                        onClick={() => setShowPromo(false)}
+                    />
+
+                    <div className="relative w-full max-w-2xl bg-white dark:bg-slate-900 rounded-[2rem] overflow-hidden shadow-2xl animate-in zoom-in-95 duration-500 ring-1 ring-white/10">
+                        {/* Header with Close */}
+                        <div className="absolute top-4 right-4 z-10">
+                            <button
+                                onClick={() => setShowPromo(false)}
+                                className="p-2 bg-black/20 hover:bg-black/40 backdrop-blur-md text-white rounded-full transition-all hover:scale-110 active:scale-95"
+                            >
+                                <X size={20} />
+                            </button>
+                        </div>
+
+                        {/* Banner Image Container */}
+                        <div className="relative aspect-[4/5] sm:aspect-video w-full overflow-hidden group">
+                            {promoBanner.url ? (
+                                <a
+                                    href={promoBanner.url}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="block w-full h-full"
+                                >
+                                    <img
+                                        src={promoBanner.img}
+                                        alt="Promoción Especial"
+                                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                                    />
+                                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center p-8">
+                                        <span className="px-6 py-2 bg-white text-rose-600 rounded-full font-bold text-sm flex items-center gap-2 shadow-lg">
+                                            Ver más <ChevronRight size={16} />
+                                        </span>
+                                    </div>
+                                </a>
+                            ) : (
+                                <img
+                                    src={promoBanner.img}
+                                    alt="Promoción Especial"
+                                    className="w-full h-full object-cover"
+                                />
+                            )}
+                        </div>
+
+                        {/* Mobile Friendly Footer Action (Visible if URL exists) */}
+                        {promoBanner.url && (
+                            <div className="p-4 sm:hidden bg-white dark:bg-slate-900">
+                                <a
+                                    href={promoBanner.url}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="w-full py-4 bg-rose-600 text-white rounded-xl font-bold flex items-center justify-center gap-2"
+                                >
+                                    Ver Detalle <ArrowRight size={18} />
+                                </a>
+                            </div>
+                        )}
                     </div>
                 </div>
             )}
