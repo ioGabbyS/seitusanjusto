@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Download, Upload, AlertTriangle, Database, Trash2, HardDrive, PackageCheck, Star, Users, RefreshCw, Wrench, RotateCcw, Instagram, MessageCircle, Facebook, Plus, Youtube, ChevronUp, ChevronDown } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Sun, Download, Upload, AlertTriangle, Database, Trash2, HardDrive, PackageCheck, Star, Users, RefreshCw, Wrench, RotateCcw, Instagram, MessageCircle, Facebook, Plus, Youtube, ChevronUp, ChevronDown } from 'lucide-react';
 import { useStore } from '../hooks/useStore.jsx';
 import { INITIAL_PRODUCTS } from '../data/products.js';
 import { supabase } from '../utils/supabaseClient';
