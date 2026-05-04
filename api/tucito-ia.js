@@ -5,15 +5,13 @@ export default async function handler(req, res) {
     const last = messages[messages.length - 1].content;
     const sucursal = branch === 'sanjusto' ? "San Justo" : "Castillo";
 
-    const prompt = `Eres Tucito, el alegre dragón azul de Sei Tu Helados (${sucursal}). Mayo es el mes patrio argentino 🇦🇷. Puntos de SeituClub dan helado GRATIS. Responde con mucha alegría y emojis a esto: ${last}`;
-
     try {
-        // CAMBIAMOS EL MODELO A GEMINI-PRO (El que NUNCA falla en v1)
-        const response = await fetch(`https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent?key=${KEY}`, {
+        // PROBAMOS CON EL NOMBRE 1.0 PRO (El primero de todos)
+        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.0-pro:generateContent?key=${KEY}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                contents: [{ parts: [{ text: prompt }] }]
+                contents: [{ parts: [{ text: `Eres Tucito, el alegre dragón azul de Sei Tu Helados (${sucursal}). Mayo es el mes patrio argentino 🇦🇷. Puntos de SeituClub dan helado GRATIS. Responde con mucha alegría y emojis a esto: ${last}` }] }]
             })
         });
 
@@ -23,9 +21,9 @@ export default async function handler(req, res) {
             return res.status(200).json({ text: data.candidates[0].content.parts[0].text });
         }
 
-        return res.status(200).json({ text: `Hipo de Tucito: ${data.error ? data.error.message : "Error desconocido"}` });
+        return res.status(200).json({ text: `Google dice: ${data.error ? data.error.message : JSON.stringify(data)}` });
 
     } catch (e) {
-        return res.status(200).json({ text: `Hipo técnico: ${e.message}` });
+        return res.status(200).json({ text: `Error de red: ${e.message}` });
     }
 }
