@@ -28,7 +28,7 @@ export default function AIChatbot() {
         setIsLoading(true);
 
         try {
-            const response = await fetch('/api/tucito-ia?v=5.0', {
+            const response = await fetch('/api/tucito-ia?v=6.0', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -49,11 +49,15 @@ export default function AIChatbot() {
         <>
             <button
                 onClick={() => setIsOpen(true)}
-                className="fixed bottom-24 right-6 p-4 bg-cyan-500 text-white rounded-full shadow-2xl z-[9999] hover:scale-110 active:scale-95 transition-all duration-300 group"
+                className="fixed bottom-24 right-6 w-16 h-16 bg-cyan-500 rounded-full shadow-2xl z-[9999] hover:scale-110 active:scale-95 transition-all duration-300 group overflow-hidden border-4 border-white"
             >
-                <div className="relative">
-                    <MessageCircle className="w-8 h-8 group-hover:rotate-12 transition-transform" />
-                    <span className="absolute -top-2 -right-2 w-4 h-4 bg-red-500 rounded-full border-2 border-white animate-pulse" />
+                <div className="relative w-full h-full">
+                    <img
+                        src="https://seitucastillo.com.ar/tucito.png"
+                        alt="Tucito"
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform"
+                    />
+                    <span className="absolute top-0 right-0 w-4 h-4 bg-red-500 rounded-full border-2 border-white animate-pulse" />
                 </div>
             </button>
 
