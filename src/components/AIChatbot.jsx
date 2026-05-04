@@ -64,7 +64,7 @@ export default function AIChatbot() {
                         <div className="flex items-center gap-4">
                             <div className="relative w-14 h-14 bg-white rounded-2xl p-1 shadow-inner overflow-hidden">
                                 <img
-                                    src="https://raw.githubusercontent.com/ioGabbyS/Seitucastillo/main/public/logofinal.png"
+                                    src="https://seitucastillo.com.ar/logofinal.png"
                                     alt="Tucito"
                                     className="w-full h-full object-contain"
                                     onError={(e) => { e.target.src = 'https://api.dicebear.com/7.x/bottts/svg?seed=Tucito' }}
