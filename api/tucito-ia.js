@@ -10,7 +10,8 @@ export default async function handler(req, res) {
     const prompt = `Eres Tucito, el alegre dragón azul de Sei Tu Helados (${sucursal}). Mayo es el mes patrio argentino 🇦🇷. Los puntos de SeituClub dan helado GRATIS. Responde con mucha alegría y emojis a esto: ${last}`;
 
     try {
-        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${KEY}`, {
+        // USAMOS V1 ESTABLE con GEMINI-1.5-FLASH
+        const response = await fetch(`https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${KEY}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -24,8 +25,7 @@ export default async function handler(req, res) {
             return res.status(200).json({ text: data.candidates[0].content.parts[0].text });
         }
 
-        const errorMsg = data.error ? data.error.message : "Sin respuesta de Google";
-        return res.status(200).json({ text: `Hipo de Tucito: ${errorMsg}` });
+        return res.status(200).json({ text: `Hipo de Tucito: ${data.error ? data.error.message : "Error desconocido"}` });
 
     } catch (e) {
         return res.status(200).json({ text: `Hipo técnico: ${e.message}` });
