@@ -525,6 +525,11 @@ function useStoreSource() {
                         localStorage.setItem('seitu_event_auto_approve', paloma.configuration.autoApprove.toString());
                     }
                 }
+                const promo = data.find(s => s.id === 'promo_banner');
+                if (promo) {
+                    setPromoBanner(promo.configuration);
+                    localStorage.setItem('seitu_promo_banner', JSON.stringify(promo.configuration));
+                }
             }
         } catch (e) {
             console.error("Error fetching settings:", e);
