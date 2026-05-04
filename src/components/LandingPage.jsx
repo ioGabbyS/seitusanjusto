@@ -190,19 +190,66 @@ export default function LandingPage() {
                 <div className="max-w-7xl mx-auto px-6 mb-12 flex justify-between items-end">
                     <h2 className="text-5xl font-black text-slate-800 dark:text-white">Nuestros <span className="text-brand-500">Sabores</span></h2>
                     <div className="flex gap-2">
-                        <button onClick={() => scroll('left')} className="p-3 bg-white dark:bg-slate-800 rounded-full shadow-lg"><ArrowRight className="rotate-180" /></button>
-                        <button onClick={() => scroll('right')} className="p-3 bg-slate-900 dark:bg-brand-500 text-white rounded-full shadow-lg"><ArrowRight /></button>
+                        <button onClick={() => scroll('left')} className="p-3 bg-white dark:bg-slate-800 rounded-full shadow-lg hover:bg-brand-50 transition-colors"><ArrowRight className="rotate-180" /></button>
+                        <button onClick={() => scroll('right')} className="p-3 bg-brand-500 text-white rounded-full shadow-lg hover:bg-brand-600 transition-colors"><ArrowRight /></button>
                     </div>
                 </div>
                 <div id="flavor-slider" className="flex overflow-x-auto gap-8 px-6 pb-12 no-scrollbar">
                     {allImages.map(img => (
-                        <div key={img.id} onClick={() => setModalImage(img.image)} className="flex-none w-[300px] sm:w-[450px] h-[500px] rounded-[3rem] overflow-hidden group relative cursor-pointer shadow-xl">
-                            <img src={img.image} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt={img.title} />
-                            <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                                <span className="text-white font-black border-2 border-white px-6 py-2 rounded-full">VER DETALLE</span>
+                        <div key={img.id} onClick={() => setModalImage(img.image)} className="flex-none w-[300px] sm:w-[450px] h-[500px] rounded-[3.5rem] overflow-hidden group relative cursor-pointer shadow-xl transition-all hover:scale-[1.02]">
+                            <img src={img.image} className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" alt={img.title} />
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-12">
+                                <div>
+                                    <h4 className="text-white text-3xl font-black mb-2">{img.title}</h4>
+                                    <p className="text-white/80 font-bold uppercase tracking-widest text-sm">Ver Producto</p>
+                                </div>
                             </div>
                         </div>
                     ))}
+                </div>
+            </section>
+
+            {/* PREMIOS (REWARDS) */}
+            <section id="premios" className="py-24 bg-white dark:bg-slate-950 overflow-hidden">
+                <div className="max-w-7xl mx-auto px-6 mb-16 text-center">
+                    <span className="bg-brand-50 text-brand-600 px-4 py-2 rounded-full font-black text-xs uppercase tracking-widest">Premios Exclusivos</span>
+                    <h2 className="text-5xl font-black mt-6 dark:text-white">Canjeá tus <span className="text-brand-500">Puntos</span></h2>
+                </div>
+                <div id="rewards-slider" className="flex gap-6 overflow-hidden pb-12 cursor-grab select-none">
+                    {[...rewards, ...rewards, ...rewards].map((reward, i) => (
+                        <div key={i} className="flex-none w-[240px] bg-slate-50 dark:bg-slate-900 rounded-[2.5rem] p-6 shadow-sm border border-slate-100 dark:border-slate-800">
+                            <div className="w-full aspect-square rounded-3xl overflow-hidden mb-6 bg-white">
+                                <img src={reward.image} className="w-full h-full object-cover" alt={reward.name} />
+                            </div>
+                            <h3 className="font-black text-slate-800 dark:text-white text-lg leading-tight mb-2 uppercase">{reward.name}</h3>
+                            <div className="flex items-center gap-2 text-brand-500 font-black italic">
+                                <Trophy size={18} /> {reward.pointCost} Pts
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </section>
+
+            {/* BENEFICIOS */}
+            <section className="py-24 bg-brand-500 relative overflow-hidden">
+                <div className="absolute -top-20 -right-20 w-80 h-80 bg-white/10 rounded-full blur-3xl"></div>
+                <div className="absolute -bottom-20 -left-20 w-80 h-80 bg-black/10 rounded-full blur-3xl"></div>
+                <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-12 text-white relative z-10">
+                    <div className="text-center md:text-left">
+                        <div className="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center mb-6 mx-auto md:mx-0 shadow-xl backdrop-blur-md"><Users size={32} /></div>
+                        <h3 className="text-2xl font-black mb-4">Comunidad Sei Tu</h3>
+                        <p className="text-white/80 font-medium">Más de 25 años brindando el mejor helado a las familias argentinas.</p>
+                    </div>
+                    <div className="text-center md:text-left">
+                        <div className="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center mb-6 mx-auto md:mx-0 shadow-xl backdrop-blur-md"><ShoppingBag size={32} /></div>
+                        <h3 className="text-2xl font-black mb-4">Club de Puntos</h3>
+                        <p className="text-white/80 font-medium">Sumá puntos con cada compra y llevate helado GRATIS.</p>
+                    </div>
+                    <div className="text-center md:text-left">
+                        <div className="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center mb-6 mx-auto md:mx-0 shadow-xl backdrop-blur-md"><Heart size={32} /></div>
+                        <h3 className="text-2xl font-black mb-4">Calidad Premium</h3>
+                        <p className="text-white/80 font-medium">Usamos las mejores materias primas para un sabor inigualable.</p>
+                    </div>
                 </div>
             </section>
 
@@ -232,32 +279,75 @@ export default function LandingPage() {
                 </div>
             )}
 
-            {/* SOCIAL FEED */}
-            <section className="py-24 bg-white dark:bg-slate-950">
+            {/* CONTACTO & MAPA */}
+            <section id="contacto" className="py-24 bg-white dark:bg-slate-950">
                 <div className="max-w-7xl mx-auto px-6">
-                    <h2 className="text-5xl font-black mb-12 dark:text-white">Seguinos en <span className="text-pink-600">Redes</span></h2>
-                    <div id="social-slider" className="flex gap-6 overflow-hidden pb-12">
-                        {[...landingPosts, ...landingPosts].map((post, i) => (
-                            <div key={i} onClick={() => setSocialModal(post)} className="flex-none w-[280px] aspect-square rounded-[2rem] overflow-hidden cursor-pointer hover:-translate-y-2 transition-all shadow-lg">
-                                <img src={post.img} className="w-full h-full object-cover" alt="Post" />
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                        <div>
+                            <h2 className="text-5xl font-black mb-8 dark:text-white">Vení a <span className="text-brand-500">visitarnos</span></h2>
+                            <div className="space-y-8">
+                                <div className="flex gap-6 items-start">
+                                    <div className="w-12 h-12 bg-slate-100 dark:bg-slate-900 rounded-xl flex items-center justify-center text-brand-500 shrink-0"><MapPin size={24} /></div>
+                                    <div>
+                                        <h4 className="font-black text-lg mb-1 dark:text-white uppercase tracking-tighter">Ubicación</h4>
+                                        <p className="text-slate-500 font-medium">Av. Pte. Illia 2467, San Justo.</p>
+                                    </div>
+                                </div>
+                                <div className="flex gap-6 items-start">
+                                    <div className="w-12 h-12 bg-slate-100 dark:bg-slate-900 rounded-xl flex items-center justify-center text-brand-500 shrink-0"><Clock size={24} /></div>
+                                    <div>
+                                        <h4 className="font-black text-lg mb-1 dark:text-white uppercase tracking-tighter">Horarios</h4>
+                                        <p className="text-slate-500 font-medium">Lunes a Domingo: 08:00 AM - 24:00 HS</p>
+                                    </div>
+                                </div>
+                                <div className="flex gap-6 items-start">
+                                    <div className="w-12 h-12 bg-slate-100 dark:bg-slate-900 rounded-xl flex items-center justify-center text-brand-500 shrink-0"><Coffee size={24} /></div>
+                                    <div>
+                                        <h4 className="font-black text-lg mb-1 dark:text-white uppercase tracking-tighter">Nuestros Servicios</h4>
+                                        <p className="text-slate-500 font-medium font-black italic">HELADERÍA • CAFETERÍA • TAKE AWAY</p>
+                                    </div>
+                                </div>
                             </div>
-                        ))}
+                        </div>
+                        <div className="h-[400px] rounded-[3.5rem] overflow-hidden shadow-2xl border-8 border-white dark:border-slate-900">
+                            <iframe
+                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3280.999999999999!2d-58.558!3d-34.678!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzTCsDQwJzQwLjgiUyA1OMKwMzMnMjguOCJX!5e0!3m2!1ses!2sar!4v1620000000000!5m2!1ses!2sar"
+                                width="100%" height="100%" style={{ border: 0 }} allowFullScreen="" loading="lazy"
+                            ></iframe>
+                        </div>
                     </div>
                 </div>
             </section>
 
             {/* FOOTER */}
-            <footer className="bg-slate-900 py-20 px-6 text-slate-400">
-                <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12">
-                    <div>
-                        <div className="flex items-center gap-3 mb-6 text-white text-3xl font-black uppercase">
-                            <img src="/logosanjusto.png" className="h-10 w-10" /> SEITU SAN JUSTO
+            <footer className="bg-slate-900 dark:bg-black py-24 px-6 text-slate-400">
+                <div className="max-w-7xl mx-auto">
+                    <div className="flex flex-col md:flex-row justify-between items-center gap-12 border-b border-slate-800 pb-16 mb-16">
+                        <div className="flex items-center gap-4">
+                            <img src="/logosanjusto.png" className="h-16 w-16" alt="Logo" />
+                            <div>
+                                <h3 className="text-white text-3xl font-black tracking-tighter uppercase leading-none">Seitu</h3>
+                                <p className="text-brand-500 font-black tracking-[0.3em] uppercase text-xs">San Justo</p>
+                            </div>
                         </div>
-                        <p className="max-w-xs">La mejor calidad Sei Tu en San Justo. Av. Pte. Illia 2467.</p>
+                        <div className="flex gap-4">
+                            <a href={socialLinks.instagram} className="w-14 h-14 bg-slate-800 rounded-2xl flex items-center justify-center text-white hover:bg-brand-500 transition-all"><Instagram /></a>
+                            <a href={socialLinks.facebook} className="w-14 h-14 bg-slate-800 rounded-2xl flex items-center justify-center text-white hover:bg-brand-500 transition-all"><Facebook /></a>
+                        </div>
                     </div>
-                    <div className="text-right">
-                        <h4 className="text-white font-black uppercase text-xs mb-4">Horarios</h4>
-                        <p>Todos los días: 08 AM - 24 HS</p>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+                        <div>
+                            <h4 className="text-white font-black uppercase tracking-widest text-xs mb-6">Nuestra Casa</h4>
+                            <p className="font-medium">Av. Pte Illia 2467, San Justo.<br />Buenos Aires, Argentina.</p>
+                        </div>
+                        <div>
+                            <h4 className="text-white font-black uppercase tracking-widest text-xs mb-6">Seitu Club</h4>
+                            <a href="#/portal" className="text-brand-500 font-black hover:underline transition-all">Acceso Miembros</a>
+                        </div>
+                        <div className="md:text-right text-slate-500 text-sm font-bold">
+                            © {new Date().getFullYear()} SEITU SAN JUSTO. <br />
+                            Todos los derechos reservados.
+                        </div>
                     </div>
                 </div>
             </footer>
