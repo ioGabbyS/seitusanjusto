@@ -28,7 +28,7 @@ export default function AIChatbot() {
         setIsLoading(true);
 
         try {
-            const response = await fetch('/api/tucito-ia?v=7.0', {
+            const response = await fetch('/api/tucito-ia?v=8.0', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({

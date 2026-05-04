@@ -663,10 +663,12 @@ const TucitoManager = () => {
             try {
                 const { data } = await supabase
                     .from('settings')
-                    .select('value')
-                    .eq('key', 'tucito_prompt')
+                    .select('configuration')
+                    .eq('id', 'tucito_prompt')
                     .single();
-                if (data) setPrompt(data.value);
+                if (data?.configuration?.prompt) {
+                    setPrompt(data.configuration.prompt);
+                }
             } catch (e) {
                 console.error("Error cargando prompt de Tucito");
             } finally {
@@ -681,7 +683,10 @@ const TucitoManager = () => {
         try {
             const { error } = await supabase
                 .from('settings')
-                .upsert({ key: 'tucito_prompt', value: prompt, id: 'tucito_prompt' }, { onConflict: 'key' });
+                .upsert({
+                    id: 'tucito_prompt',
+                    configuration: { prompt: prompt }
+                });
 
             if (error) throw error;
             alert('✅ ¡El Cerebro de Tucito ha sido actualizado!');
@@ -843,11 +848,11 @@ export default function Settings() {
                             </div>
                             <div className="w-32 h-1.5 bg-slate-200 rounded-full overflow-hidden">
                                 <div
-                                    className={`h-full transition-all ${usage.isCritical ? 'bg-red-500' : 'bg-brand-500'}`}
-                                    style={{ width: `${usage.percentage}%` }}
+                                    className={`h-full transition-all ${usage.percentage > 90 ? 'bg-amber-500' : 'bg-brand-500'}`}
+                                    style={{ width: `${Math.min(usage.percentage, 100)}%` }}
                                 />
                             </div>
-                            <span className="text-[10px] text-slate-400 mt-1">{usage.totalMB} MB de ~5 MB</span>
+                            <span className="text-[10px] text-slate-400 mt-1">{usage.totalMB} MB utilizados</span>
                         </div>
                     ) : null);
                 })()}
