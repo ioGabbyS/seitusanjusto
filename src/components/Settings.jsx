@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Sun, Download, Upload, AlertTriangle, Database, Trash2, HardDrive, PackageCheck, Star, Users, RefreshCw, Wrench, RotateCcw, Instagram, MessageCircle, Facebook, Plus, Youtube, ChevronUp, ChevronDown } from 'lucide-react';
+import { Sun, Download, Upload, AlertTriangle, Database, Trash2, HardDrive, PackageCheck, Star, Users, RefreshCw, Wrench, RotateCcw, Instagram, MessageCircle, Facebook, Plus, Youtube, ChevronUp, ChevronDown, Sparkles } from 'lucide-react';
 import { useStore } from '../hooks/useStore.jsx';
 import { INITIAL_PRODUCTS } from '../data/products.js';
 import { supabase } from '../utils/supabaseClient';
@@ -653,6 +653,80 @@ const SocialManager = () => {
     );
 };
 
+const TucitoManager = () => {
+    const [prompt, setPrompt] = useState('');
+    const [isSaving, setIsSaving] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
+
+    useEffect(() => {
+        const loadPrompt = async () => {
+            try {
+                const { data } = await supabase
+                    .from('settings')
+                    .select('value')
+                    .eq('key', 'tucito_prompt')
+                    .single();
+                if (data) setPrompt(data.value);
+            } catch (e) {
+                console.error("Error cargando prompt de Tucito");
+            } finally {
+                setIsLoading(false);
+            }
+        };
+        loadPrompt();
+    }, []);
+
+    const handleSave = async () => {
+        setIsSaving(true);
+        try {
+            const { error } = await supabase
+                .from('settings')
+                .upsert({ key: 'tucito_prompt', value: prompt, id: 'tucito_prompt' }, { onConflict: 'key' });
+
+            if (error) throw error;
+            alert('✅ ¡El Cerebro de Tucito ha sido actualizado!');
+        } catch (err) {
+            alert('❌ Error al guardar instrucciones: ' + err.message);
+        } finally {
+            setIsSaving(false);
+        }
+    };
+
+    return (
+        <div className="p-6 bg-cyan-50 border border-cyan-100 rounded-xl relative overflow-hidden">
+            <div className="absolute -top-6 -right-6 opacity-10 rotate-12">
+                <Sparkles size={80} className="text-cyan-600" />
+            </div>
+
+            <h3 className="font-bold text-cyan-900 mb-2 flex items-center gap-2 relative z-10">
+                <Sparkles size={20} className="text-cyan-600" /> Cerebro de Tucito AI
+            </h3>
+            <p className="text-sm text-cyan-800 mb-4 relative z-10">
+                Define aquí cómo debe comportarse Tucito. Dale instrucciones sobre horarios, precios, promociones o su personalidad.
+            </p>
+
+            <div className="space-y-4 relative z-10">
+                <textarea
+                    value={prompt}
+                    onChange={e => setPrompt(e.target.value)}
+                    disabled={isLoading}
+                    placeholder={isLoading ? "Cargando cerebro..." : "Ej: Eres Tucito, el dragón de Sei Tu San Justo. Atendemos de 12 a 00hs. La promo de hoy es..."}
+                    className="w-full h-40 px-4 py-3 rounded-xl border border-cyan-200 bg-white shadow-inner text-sm focus:ring-2 focus:ring-cyan-500/20 text-slate-800 font-medium leading-relaxed transition-all"
+                />
+
+                <button
+                    onClick={handleSave}
+                    disabled={isSaving || isLoading}
+                    className="w-full py-3 bg-cyan-600 text-white rounded-xl font-bold hover:bg-cyan-700 transition-all shadow-md shadow-cyan-200 flex items-center justify-center gap-2 disabled:opacity-50"
+                >
+                    {isSaving ? <RefreshCw size={18} className="animate-spin" /> : <Database size={18} />}
+                    {isSaving ? 'GUARDANDO INSTRUCCIONES...' : 'GUARDAR CEREBRO DE TUCITO'}
+                </button>
+            </div>
+        </div>
+    );
+};
+
 export default function Settings() {
     const { exportData, importData, purgeOldData, clearAllImages, factoryReset, clearHistory } = useStore();
 
@@ -890,6 +964,14 @@ export default function Settings() {
                     <Instagram size={20} /> Redes Sociales y Galería Web
                 </h3>
                 <SocialManager />
+            </div>
+
+            {/* TUCITO AI MANAGER (NEW) */}
+            <div className="space-y-4 pt-4">
+                <h3 className="font-bold text-slate-700 text-lg border-b pb-2 flex items-center gap-2">
+                    <Sparkles size={20} className="text-cyan-500" /> Cerebro de la Inteligencia Artificial
+                </h3>
+                <TucitoManager />
             </div>
 
             {/* MAINTENANCE */}
