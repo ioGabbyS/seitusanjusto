@@ -4,31 +4,31 @@ export default async function handler(req, res) {
     let KEY = process.env.GEMINI_API_KEY || "";
     if (!KEY) return res.status(200).json({ text: "¡Hola! 🐲 No encuentro mi clave." });
 
+    const last = messages[messages.length - 1].content;
     const isSanJusto = branch === 'sanjusto';
-    const BRANCH_NAME = isSanJusto ? "Sei Tu San Justo" : "Sei Tu Castillo";
-
-    const SYSTEM_PROMPT = `Eres Tucito, el dragón azul de ${BRANCH_NAME}. Alegre, dulce y servicial 🐲🍦✨. MAYO: Mes patrio en Argentina 🇦🇷. Muy orgulloso de los colores celeste y blanco. Recuerda: SeituClub da helado GRATIS. Responde alegremente.`;
+    const sucursal = isSanJusto ? "San Justo" : "Castillo";
 
     try {
-        const lastMsg = messages[messages.length - 1].content;
         const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${KEY}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                contents: [{ parts: [{ text: `${SYSTEM_PROMPT}\n\nUsuario: ${lastMsg}` }] }]
+                system_instruction: { parts: [{ text: `Eres Tucito, el alegre dragón azul de Sei Tu Helados (${sucursal}). Mayo es mes patrio 🇦🇷. Puntos de SeituClub dan helado GRATIS. Responde alegremente con emojis.` }] },
+                contents: [{ role: "user", parts: [{ text: last }] }],
+                safetySettings: [
+                    { category: "HARM_CATEGORY_HARASSMENT", threshold: "BLOCK_NONE" },
+                    { category: "HARM_CATEGORY_HATE_SPEECH", threshold: "BLOCK_NONE" },
+                    { category: "HARM_CATEGORY_SEXUALLY_EXPLICIT", threshold: "BLOCK_NONE" },
+                    { category: "HARM_CATEGORY_DANGEROUS_CONTENT", threshold: "BLOCK_NONE" }
+                ]
             })
         });
 
         const data = await response.json();
+        const text = data.candidates?.[0]?.content?.parts?.[0]?.text || "¡Hola! Soy Tucito 🐲. ¡Vamos a festejar este mayo patrio con un helado! 🇦🇷🍦";
+        return res.status(200).json({ text });
 
-        if (data.candidates && data.candidates[0] && data.candidates[0].content) {
-            const text = data.candidates[0].content.parts[0].text;
-            return res.status(200).json({ text });
-        }
-
-        return res.status(200).json({ text: "¡Hola! Soy Tucito. 🐲 ¿En qué puedo ayudarte hoy con estos ricos helados? 🍦✨" });
-
-    } catch (error) {
-        return res.status(200).json({ text: "Tucito tiene un pequeño hipo, ¡pero ya estoy acá! 🐲🍦" });
+    } catch (e) {
+        return res.status(200).json({ text: "¡Hola! Soy Tucito 🐲. ¿En qué puedo ayudarte? 🍦" });
     }
 }
