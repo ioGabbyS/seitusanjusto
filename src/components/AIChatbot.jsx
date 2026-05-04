@@ -64,7 +64,7 @@ export default function AIChatbot() {
                         <div className="flex items-center gap-4">
                             <div className="relative w-14 h-14 bg-white rounded-2xl p-1 shadow-inner overflow-hidden">
                                 <img
-                                    src="https://raw.githubusercontent.com/ioGabbyS/seitusanjusto/main/public/logofinal.png"
+                                    src="https://raw.githubusercontent.com/ioGabbyS/Seitucastillo/main/public/logofinal.png"
                                     alt="Tucito"
                                     className="w-full h-full object-contain"
                                     onError={(e) => { e.target.src = 'https://api.dicebear.com/7.x/bottts/svg?seed=Tucito' }}
@@ -93,8 +93,8 @@ export default function AIChatbot() {
                         {messages.map((m, i) => (
                             <div key={i} className={`flex ${m.role === 'user' ? 'justify-end' : 'justify-start'} animate-in fade-in slide-in-from-bottom-2 duration-300`}>
                                 <div className={`max-w-[85%] p-4 rounded-2xl shadow-sm ${m.role === 'user'
-                                        ? 'bg-cyan-700 text-white rounded-br-none font-medium'
-                                        : 'bg-white text-slate-700 rounded-bl-none border border-cyan-100/50 leading-relaxed'}`}>
+                                    ? 'bg-cyan-700 text-white rounded-br-none font-medium'
+                                    : 'bg-white text-slate-700 rounded-bl-none border border-cyan-100/50 leading-relaxed'}`}>
                                     {m.content}
                                 </div>
                             </div>
