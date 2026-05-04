@@ -49,7 +49,7 @@ export default function AIChatbot() {
         <>
             <button
                 onClick={() => setIsOpen(true)}
-                className="fixed bottom-24 right-6 w-16 h-16 bg-cyan-500 rounded-full shadow-2xl z-[9999] hover:scale-110 active:scale-95 transition-all duration-300 group overflow-hidden border-4 border-white"
+                className="fixed bottom-32 right-6 w-16 h-16 bg-cyan-500 rounded-full shadow-2xl z-[9999] hover:scale-110 active:scale-95 transition-all duration-300 group overflow-hidden border-4 border-white"
             >
                 <div className="relative w-full h-full">
                     <img
