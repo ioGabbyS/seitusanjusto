@@ -626,7 +626,6 @@ function useStoreSource() {
                     }));
 
                     if (mapped.length > 0) {
-                        // Restore stockResetAt timestamps from local storage
                         try {
                             const resetMapStr = localStorage.getItem('seitu_stock_reset_map');
                             if (resetMapStr) {
@@ -637,14 +636,28 @@ function useStoreSource() {
                             }
                         } catch (e) { /* ignore parse errors */ }
 
-                        setCatalog(mapped);
-                        safeStorageSet('seitu_catalog', JSON.stringify(mapped));
+                        // v5.9: Smart Merge Logic - Prevent deletion of newly added products on local device
+                        setCatalog(prev => {
+                            const cloudMap = new Map(mapped.map(p => [p.id, p]));
+                            const merged = [...mapped];
 
-                        // Auto-rebuild categories from the products so clearing cache never loses them
+                            // Add local items that haven't reached cloud yet (Protect new additions)
+                            prev.forEach(p => {
+                                if (!cloudMap.has(p.id)) {
+                                    merged.push(p);
+                                    console.log("🛡️ Protegiendo producto local no sincronizado:", p.name);
+                                }
+                            });
+
+                            safeStorageSet('seitu_catalog', JSON.stringify(merged));
+                            return merged;
+                        });
+
+                        // Auto-rebuild categories from the products
                         const derivedCats = [...new Set(mapped.map(p => p.category).filter(Boolean))].sort();
                         setCategories(derivedCats);
                         safeStorageSet('seitu_categories', JSON.stringify(derivedCats));
-                        console.log("✅ Catálogo sincronizado (Sobrescritura total para evitar duplicados).");
+                        console.log("✅ Catálogo sincronizado (Smart Merge activo).");
                     }
                 }
             } catch (e) {
@@ -680,7 +693,7 @@ function useStoreSource() {
             try {
                 const { data: cloudSessions } = await supabase.from('sessions').select('*').order('started_at', { ascending: false }).limit(500);
                 if (cloudSessions) {
-                    const mapped = cloudSessions.map(s => ({
+                    const mappedSessions = cloudSessions.map(s => ({
                         id: s.id,
                         cashier: s.cashier,
                         startedAt: s.started_at,
@@ -697,7 +710,7 @@ function useStoreSource() {
                         cashBreakdown: s.cash_breakdown
                     }));
                     setSessions(prev => {
-                        const merged = mergeCloud(prev, mapped, 'startedAt');
+                        const merged = mergeCloud(prev, mappedSessions, 'startedAt');
                         safeStorageSet('seitu_sessions', JSON.stringify(merged));
                         return merged;
                     });
