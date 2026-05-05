@@ -1,14 +1,13 @@
 import { createClient } from '@supabase/supabase-js';
 
 // URL única de San Justo
-const supabaseUrl = 'https://adkdesaeysijbgmiyywj.supabase.co';
-const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_ANON_KEY;
+const supabaseUrl = process.env.VITE_SUPABASE_URL || process.env.SUPABASE_URL || 'https://adkdesaeysijbgmiyywj.supabase.co';
+const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.VITE_SUPABASE_ANON_KEY || process.env.SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFka2Rlc2FleXNpamJnbWl5eXdqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc1MjEwOTcsImV4cCI6MjA5MzA5NzA5N30.eVN9Ooae5NFnJ0zs-D0Ln42wFidKQjz-V1Mh93nGRh8';
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 export default async function handler(req, res) {
     if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
-    // Forzamos CORS y Headers para evitar problemas de red
     res.setHeader('Access-Control-Allow-Origin', '*');
 
     const { messages } = req.body;
@@ -18,22 +17,35 @@ export default async function handler(req, res) {
 
     const last = messages[messages.length - 1].content;
 
-    // 1. Detectar Sucursal
-    const host = req.headers.host || "";
-    const isSanJusto = host.includes("sanjusto") || host.includes("seitu-fiel");
-    const sucursal = isSanJusto ? "San Justo" : "Castillo";
+    const sucursal = "San Justo";
 
-    // 2. Leer instrucciones de Supabase
     let instructions = `Eres Tucito de Sei Tu ${sucursal}. Responde alegremente. Mayo es mes patrio 🇦🇷.`;
     try {
         const { data } = await supabase
             .from('settings')
-            .select('value')
-            .eq('key', 'tucito_prompt')
+            .select('configuration')
+            .eq('id', 'tucito_prompt')
             .single();
-        if (data && data.value) instructions = data.value;
+        if (data && data.configuration && data.configuration.prompt) {
+            instructions = data.configuration.prompt;
+        }
     } catch (e) {
-        console.warn("Usando prompt por defecto");
+        console.warn(`Usando prompt por defecto en ${sucursal}`);
+    }
+
+    try {
+        const { data: rewardsData } = await supabase.from('rewards').select('*');
+        if (rewardsData && rewardsData.length > 0) {
+            const premios = rewardsData.map(r => `- ${r.name} (${r.pointCost || r.point_cost} pts)`).join('\n');
+            instructions += `\n\nREGLA ESTRICTA DE SISTEMA SOBRE PUNTOS:
+Si el usuario pregunta sobre "puntos", "club", "seituclub" o cómo canjear, ESTÁS OBLIGADO a responder con esta información exacta sin inventar nada:
+- Por cada $1000 pesos de compra, el cliente suma 100 puntos.
+- Lista actual y real de premios para canjear:
+${premios}
+(Menciona siempre algunos de estos premios reales en tu respuesta).`;
+        }
+    } catch (e) {
+        console.warn("No se pudieron cargar los premios para Tucito");
     }
 
     try {
@@ -41,9 +53,12 @@ export default async function handler(req, res) {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
+                system_instruction: { 
+                    parts: [{ text: instructions }] 
+                },
                 contents: [{
                     role: "user",
-                    parts: [{ text: `INSTRUCCIONES: ${instructions}\n\nPREGUNTA DEL CLIENTE: ${last}` }]
+                    parts: [{ text: last }]
                 }]
             })
         });
@@ -53,7 +68,6 @@ export default async function handler(req, res) {
             return res.status(200).json({ text: data.candidates[0].content.parts[0].text });
         }
 
-        // Si Gemini está saturado o falla la cuota
         if (data.error) {
             return res.status(200).json({ text: "Tucito está descansando un minuto. ¡Probá de nuevo en un ratito! 🐲💤" });
         }

@@ -1,0 +1,7 @@
+*.mp4
+*.MOV
+*.avi
+node_modules
+.next
+out
+build
