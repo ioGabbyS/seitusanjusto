@@ -395,7 +395,7 @@ export default function LandingPage() {
                     <div className="sticky top-0 z-50 bg-white/80 dark:bg-slate-950/80 backdrop-blur-xl border-b border-slate-100 dark:border-slate-900 px-6 py-6 transition-colors">
                         <div className="max-w-7xl mx-auto flex justify-between items-center">
                             <div className="flex items-center gap-2">
-                                <img src="/logofinal.png" alt="Seitu Logo" className="h-8 w-8 object-contain" />
+                                <img src={displayNavLogo} alt="Seitu Logo" className="h-8 w-8 object-contain" />
                                 <span className="font-black text-xl tracking-tighter dark:text-white">NUESTRA HISTORIA</span>
                             </div>
                             <button
@@ -511,7 +511,7 @@ export default function LandingPage() {
                     <div className="sticky top-0 z-50 bg-white/80 dark:bg-slate-950/80 backdrop-blur-xl border-b border-slate-100 dark:border-slate-900 px-6 py-6 transition-colors">
                         <div className="max-w-7xl mx-auto flex justify-between items-center">
                             <div className="flex items-center gap-2">
-                                <img src="/logofinal.png" alt="Seitu Logo" className="h-8 w-8 object-contain" />
+                                <img src={displayNavLogo} alt="Seitu Logo" className="h-8 w-8 object-contain" />
                                 <span className="font-black text-xl tracking-tighter dark:text-white">SEITU CLUB • PUNTOS</span>
                             </div>
                             <button
@@ -757,7 +757,7 @@ export default function LandingPage() {
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-16 mb-20 items-start">
                         <div className="col-span-1">
                             <div className="flex items-center gap-3 mb-8 text-white">
-                                <img src="/logofinal.png" alt="Logo" className="h-10 w-10 object-contain" />
+                                <img src={displayNavLogo} alt="Logo" className="h-10 w-10 object-contain" />
                                 <span className="text-3xl font-black tracking-tighter uppercase">{tenant.shortName.toUpperCase()}</span>
                             </div>
                             <p className="text-sm text-sky-400/80 leading-relaxed max-w-xs font-medium">
@@ -872,7 +872,7 @@ export default function LandingPage() {
                             <div className="flex items-center gap-3 mb-8">
                                 <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-purple-500 to-orange-500 p-0.5">
                                     <div className="w-full h-full rounded-full bg-slate-900 p-0.5 flex items-center justify-center">
-                                        <img src="/logofinal.png" className="w-6 h-6 object-contain" alt="Logo" />
+                                        <img src={displayNavLogo} className="w-6 h-6 object-contain" alt="Logo" />
                                     </div>
                                 </div>
                                 <div>
