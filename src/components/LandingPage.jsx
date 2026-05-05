@@ -13,6 +13,7 @@ export default function LandingPage() {
     const [viewPuntos, setViewPuntos] = useState(false);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [showPromo, setShowPromo] = useState(false);
+    const [showDevLogo, setShowDevLogo] = useState(false);
     const { theme, toggleTheme, socialLinks, landingPosts, promoBanner } = useStore();
     const [rewards, setRewards] = useState([]);
 
@@ -795,7 +796,7 @@ export default function LandingPage() {
                         </div>
                         
                         <div className="w-full md:w-1/3 flex flex-col items-center gap-4 text-center">
-                            <span className="text-slate-500">© 2026 {tenant.systemName.toUpperCase()} — TODOS LOS DERECHOS RESERVADOS</span>
+                            <button onClick={() => setShowDevLogo(true)} className="text-slate-500 hover:text-brand-500 transition-colors focus:outline-none tracking-widest font-bold text-[10px]">© 2026 GABBY'S DEV INNOVATIONS</button>
                             <div className="flex justify-center gap-6 sm:gap-8">
                                 <a href={socialLinks.instagram} target="_blank" rel="noopener noreferrer" className="hover:text-pink-500 transition-colors">Instagram</a>
                                 <a href={socialLinks.tiktok} target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">TikTok</a>
@@ -922,6 +923,16 @@ export default function LandingPage() {
                         ) : (
                             <img src={promoBanner.img} alt="Promo" className="w-full h-full object-cover" />
                         )}
+                    </div>
+                </div>
+            )}
+        
+            {/* DEV LOGO MODAL */}
+            {showDevLogo && (
+                <div className="fixed inset-0 z-[3000] flex items-center justify-center p-4 bg-black/80 backdrop-blur-md" onClick={() => setShowDevLogo(false)}>
+                    <div className="relative animate-in fade-in zoom-in duration-300" onClick={e => e.stopPropagation()}>
+                        <button onClick={() => setShowDevLogo(false)} className="absolute -top-12 right-0 md:-right-12 md:top-0 z-30 bg-black/40 backdrop-blur-md p-3 rounded-full text-white hover:bg-brand-500 transition-all shadow-xl"><X size={24} /></button>
+                        <img src="/GabbySDev.png" alt="Gabby's Dev Innovations" className="max-w-[90vw] max-h-[80vh] md:max-w-xl object-contain drop-shadow-2xl rounded-3xl" />
                     </div>
                 </div>
             )}
