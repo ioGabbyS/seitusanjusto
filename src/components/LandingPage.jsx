@@ -275,11 +275,13 @@ export default function LandingPage() {
                         {/* Cafeteria Branding Section */}
                         <div className="mb-12 p-6 bg-white/50 dark:bg-slate-900/50 backdrop-blur-sm rounded-3xl border border-slate-100 dark:border-slate-800 flex flex-col sm:flex-row items-center gap-6 max-w-md animate-in fade-in slide-in-from-bottom-4 delay-300">
                             <div className="h-24 w-24 shrink-0 bg-white rounded-2xl p-2 shadow-sm border border-slate-50">
-                                <img src="/hispanos.png" alt="5 Hispanos" className="w-full h-full object-contain" />
+                                <div className="w-16 h-16 bg-brand-500 rounded-2xl flex items-center justify-center shrink-0">
+                                    <Coffee size={32} className="text-white" />
+                                </div>
                             </div>
                             <div>
-                                <h3 className="text-xs font-black text-brand-500 uppercase tracking-widest mb-1">Cafetería Premium</h3>
-                                <p className="text-xl font-bold text-slate-700 dark:text-slate-200 leading-tight">Desde 1962, el Café más elegido de Argentina.</p>
+                                <h3 className="text-xs font-black text-brand-500 uppercase tracking-widest mb-1">Cafetería de calidad</h3>
+                                <p className="text-xl font-bold text-slate-700 dark:text-slate-200 leading-tight">Acompañá tu helado con el mejor café expresso.</p>
                             </div>
                         </div>
 
@@ -532,7 +534,7 @@ export default function LandingPage() {
                                 Canjeá tus <span className="text-sky-600">Puntos</span>
                             </h2>
                             <p className="text-2xl text-slate-550 dark:text-slate-400 max-w-2xl mx-auto leading-relaxed font-bold mb-6">
-                                Tu fidelidad tiene recompensa. En SeiTu Castillo premiamos tu elección.
+                                Tu fidelidad tiene recompensa. En {tenant.systemName} premiamos tu elección.
                             </p>
                             <p className="text-lg text-slate-500 dark:text-slate-500 max-w-xl mx-auto leading-relaxed font-medium capitalize">
                                 Cada visita es una oportunidad para sumar beneficios y disfrutar aún más lo que te gusta.
@@ -685,7 +687,7 @@ export default function LandingPage() {
                                 rel="noopener noreferrer"
                                 className="px-6 py-3 bg-gradient-to-r from-purple-600 via-pink-600 to-orange-500 text-white rounded-xl font-black text-[10px] tracking-widest hover:scale-105 transition-all shadow-xl shadow-pink-500/20 active:scale-95 flex items-center gap-2 uppercase"
                             >
-                                <Instagram size={16} /> @seitucastillo
+                                <Instagram size={16} /> @{tenant.social?.instagram || "seitucastillo"}
                             </a>
                             <a
                                 href={socialLinks.tiktok}
@@ -724,7 +726,7 @@ export default function LandingPage() {
                                             <Instagram size={18} />
                                         </div>
                                         <div className="flex flex-col text-left">
-                                            <span className="text-[10px] font-black uppercase tracking-widest text-pink-400">@seitucastillo</span>
+                                            <span className="text-[10px] font-black uppercase tracking-widest text-pink-400">@{tenant.social?.instagram || "seitucastillo"}</span>
                                             <span className="text-sm font-black uppercase tracking-tighter truncate w-32 sm:w-48">{post.label}</span>
                                         </div>
                                     </div>
@@ -736,7 +738,7 @@ export default function LandingPage() {
                     <div className="mt-8 pt-16 border-t border-slate-100 dark:border-slate-900 flex flex-wrap justify-center gap-12 sm:gap-24">
                         {[
                             { label: 'Publicaciones', val: '124' },
-                            { label: 'En Castillo', val: '5.8k' },
+                            { label: 'En ' + tenant.shortName, val: '5.8k' },
                             { label: 'Siguiendo', val: '842' }
                         ].map((stat, i) => (
                             <div key={i} className="text-center group cursor-default">
@@ -756,10 +758,10 @@ export default function LandingPage() {
                         <div className="col-span-1">
                             <div className="flex items-center gap-3 mb-8 text-white">
                                 <img src="/logofinal.png" alt="Logo" className="h-10 w-10 object-contain" />
-                                <span className="text-3xl font-black tracking-tighter uppercase">CASTILLO</span>
+                                <span className="text-3xl font-black tracking-tighter uppercase">{tenant.shortName.toUpperCase()}</span>
                             </div>
                             <p className="text-sm text-sky-400/80 leading-relaxed max-w-xs font-medium">
-                                Llevamos la mejor calidad de helado Sei Tu a Rafael Castillo. Calidad, frescura y el café de siempre. ❤️🍦
+                                Llevamos la mejor calidad de helado Sei Tu a {tenant.location}. Calidad, frescura y el café de siempre. ❤️🍦
                             </p>
                         </div>
 
@@ -768,7 +770,7 @@ export default function LandingPage() {
                                 <h4 className="text-white font-black text-xs uppercase tracking-[0.2em] mb-6">Ubicación</h4>
                                 <p className="text-sm text-sky-400/80 leading-relaxed mb-6">
                                     Carlos Casares 776<br />
-                                    Rafael Castillo<br />
+                                    {tenant.location}<br />
                                     Buenos Aires, Argentina
                                 </p>
                                 <button onClick={() => window.open(tenant.social.googleMaps, '_blank')} className="bg-slate-800/80 hover:bg-slate-800 text-white border border-slate-700/50 px-6 py-3 rounded-xl flex items-center gap-3 font-black text-[10px] tracking-[0.15em] uppercase transition-all shadow-sm">
@@ -793,7 +795,7 @@ export default function LandingPage() {
                         </div>
                         
                         <div className="w-full md:w-1/3 flex flex-col items-center gap-4 text-center">
-                            <span className="text-slate-500">© 2026 SEITU CASTILLO — TODOS LOS DERECHOS RESERVADOS</span>
+                            <span className="text-slate-500">© 2026 {tenant.systemName.toUpperCase()} — TODOS LOS DERECHOS RESERVADOS</span>
                             <div className="flex justify-center gap-6 sm:gap-8">
                                 <a href={socialLinks.instagram} target="_blank" rel="noopener noreferrer" className="hover:text-pink-500 transition-colors">Instagram</a>
                                 <a href={socialLinks.tiktok} target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">TikTok</a>
@@ -832,7 +834,7 @@ export default function LandingPage() {
 
             {/* Floating WhatsApp Button */}
             <a
-                href={`https://wa.me/${socialLinks.whatsapp}?text=Hola!%20Vengo%20desde%20la%20web%20Seitu%20Castillo%20y%20quería%20hacer%20una%20consulta.`}
+                href={`https://wa.me/${socialLinks.whatsapp}?text=Hola!%20Vengo%20desde%20la%20web%20${tenant.systemName.replace(/ /g, "%20")}%20y%20quería%20hacer%20una%20consulta.`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="fixed bottom-6 right-6 sm:bottom-12 sm:right-12 z-[60] bg-[#25D366] text-white p-5 rounded-full shadow-[0_20px_40px_rgba(37,211,102,0.4)] hover:shadow-[0_25px_50px_rgba(37,211,102,0.6)] transition-all hover:-translate-y-3 group animate-in zoom-in duration-500"
@@ -874,8 +876,8 @@ export default function LandingPage() {
                                     </div>
                                 </div>
                                 <div>
-                                    <p className="text-white font-black text-sm leading-none">seitucastillo</p>
-                                    <p className="text-slate-500 text-[10px] font-bold">Rafael Castillo</p>
+                                    <p className="text-white font-black text-sm leading-none">{tenant.social?.instagram || "seitucastillo"}</p>
+                                    <p className="text-slate-500 text-[10px] font-bold">{tenant.location}</p>
                                 </div>
                             </div>
 
