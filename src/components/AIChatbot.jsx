@@ -81,15 +81,15 @@ export default function AIChatbot() {
     };
 
     return (
-        <div className="fixed bottom-32 right-6 sm:bottom-36 sm:right-12 z-[9999] font-sans">
+        <div className="fixed bottom-24 right-4 sm:bottom-36 sm:right-12 z-[9999] font-sans">
             {/* Botón de Burbuja */}
             {!isOpen && (
                 <button
                     onClick={() => setIsOpen(true)}
-                    className="group relative bg-brand-500 text-white p-4 rounded-full shadow-2xl hover:scale-110 transition-all duration-300 hover:shadow-brand-500/50 active:scale-95"
+                    className="group relative bg-brand-500 text-white p-3 sm:p-4 rounded-full shadow-2xl hover:scale-110 transition-all duration-300 hover:shadow-brand-500/50 active:scale-95"
                 >
                     <div className="absolute inset-0 bg-brand-500 rounded-full animate-ping opacity-20 pointer-events-none"></div>
-                    <img src="/tucito.png" alt="Tucito" className="w-10 h-10 object-contain group-hover:scale-110 transition-transform" />
+                    <img src="/tucito.png" alt="Tucito" className="w-8 h-8 sm:w-10 sm:h-10 object-contain group-hover:scale-110 transition-transform" />
                     <span className="absolute -top-12 left-1/2 -translate-x-1/2 bg-slate-900 text-white text-[10px] font-black px-3 py-1.5 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap tracking-widest shadow-xl uppercase">
                         ¡Hablá con Tucito!
                     </span>

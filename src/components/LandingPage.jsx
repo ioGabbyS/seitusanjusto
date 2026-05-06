@@ -4,6 +4,28 @@ import { supabase } from '../utils/supabaseClient';
 import { useStore } from '../hooks/useStore';
 import { tenant } from '../config/tenant';
 
+const RevealOnScroll = ({ children, className = '', delay = 0 }) => {
+    const [isVisible, setIsVisible] = React.useState(false);
+    const ref = React.useRef(null);
+
+    React.useEffect(() => {
+        const observer = new IntersectionObserver(([entry]) => {
+            if (entry.isIntersecting) {
+                setIsVisible(true);
+                observer.disconnect();
+            }
+        }, { threshold: 0.1 });
+        if (ref.current) observer.observe(ref.current);
+        return () => observer.disconnect();
+    }, []);
+
+    return (
+        <div ref={ref} style={{ transitionDelay: `${delay}ms` }} className={`transition-all duration-1000 ease-out ${isVisible ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-12 scale-[0.98]'} ${className}`}>
+            {children}
+        </div>
+    );
+};
+
 export default function LandingPage() {
     const [modalImage, setModalImage] = useState(null);
     const [socialModal, setSocialModal] = useState(null);
@@ -21,6 +43,11 @@ export default function LandingPage() {
     const displayNavLogo = isSanJusto ? '/logosanjusto.png' : '/logofinal.png';
     const displayMainLogo = isSanJusto ? '/sanjusto2.png' : '/logofinal.png';
     const displayTitleSize = isSanJusto ? 'text-[4.5rem] sm:text-[6rem]' : 'text-6xl sm:text-[7.5rem]';
+
+    const [isReady, setIsReady] = useState(false);
+    useEffect(() => {
+        setTimeout(() => setIsReady(true), 1500);
+    }, []);
 
     useEffect(() => {
         const handleScroll = () => {
@@ -169,7 +196,21 @@ export default function LandingPage() {
     };
 
     return (
-        <div className="min-h-screen bg-white dark:bg-slate-950 transition-colors duration-500 font-sans text-slate-900 selection:bg-brand-100 italic-none">
+        <>
+            {/* SPLASH SCREEN PREMIUM */}
+            <div className={`fixed inset-0 z-[99999] bg-slate-950 flex flex-col items-center justify-center transition-all duration-1000 ease-in-out ${isReady ? 'opacity-0 pointer-events-none scale-105 blur-md' : 'opacity-100 scale-100 blur-0'}`}>
+                <div className="relative flex flex-col items-center">
+                    <div className="absolute inset-0 bg-brand-500/20 blur-[100px] rounded-full scale-150 animate-pulse"></div>
+                    <img src={displayMainLogo} className="w-48 sm:w-64 object-contain relative z-10 animate-bounce-slow drop-shadow-2xl" alt="Logo" />
+                    <div className="mt-12 flex gap-2">
+                        <div className="w-2 h-2 bg-brand-500 rounded-full animate-bounce"></div>
+                        <div className="w-2 h-2 bg-brand-500 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+                        <div className="w-2 h-2 bg-brand-500 rounded-full animate-bounce" style={{ animationDelay: '0.4s' }}></div>
+                    </div>
+                </div>
+            </div>
+
+            <div className={`min-h-screen bg-white dark:bg-slate-950 transition-all duration-1000 font-sans text-slate-900 selection:bg-brand-100 italic-none ${isReady ? 'opacity-100' : 'opacity-0 h-screen overflow-hidden'}`}>
             {/* Navigation */}
             <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'bg-white/80 dark:bg-slate-950/80 backdrop-blur-xl py-3 shadow-lg' : 'bg-transparent py-6'}`}>
                 <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
@@ -274,22 +315,32 @@ export default function LandingPage() {
                         </p>
 
                         {/* Cafeteria Branding Section */}
-                        <div className="mb-12 p-6 bg-white/50 dark:bg-slate-900/50 backdrop-blur-sm rounded-3xl border border-slate-100 dark:border-slate-800 flex flex-col sm:flex-row items-center gap-6 max-w-md animate-in fade-in slide-in-from-bottom-4 delay-300">
-                            <div className="h-24 w-24 shrink-0 bg-white rounded-2xl p-2 shadow-sm border border-slate-50">
-                                <div className="w-16 h-16 bg-brand-500 rounded-2xl flex items-center justify-center shrink-0">
-                                    <Coffee size={32} className="text-white" />
+                        {!isSanJusto ? (
+                            <div className="mb-12 bg-white/20 dark:bg-slate-900/40 backdrop-blur-xl border border-white/40 dark:border-slate-700/50 p-6 rounded-[2.5rem] shadow-[0_8px_32px_0_rgba(31,38,135,0.07)] flex items-center gap-6 max-w-md animate-in fade-in slide-in-from-bottom-4 delay-300 hover:-translate-y-1 hover:bg-white/30 transition-all duration-500">
+                                <img src="/hispanos.png" className="w-16 h-16 object-contain shrink-0" alt="5 Hispanos" />
+                                <div>
+                                    <span className="text-brand-400 font-black text-[9px] tracking-widest uppercase">Cafetería Premium</span>
+                                    <h4 className="text-slate-800 dark:text-white font-black text-lg leading-tight mt-1">Desde 1962, el Café más elegido de Argentina.</h4>
                                 </div>
                             </div>
-                            <div>
-                                <h3 className="text-xs font-black text-brand-500 uppercase tracking-widest mb-1">Cafetería de calidad</h3>
-                                <p className="text-xl font-bold text-slate-700 dark:text-slate-200 leading-tight">Acompañá tu helado con el mejor café expresso.</p>
+                        ) : (
+                            <div className="mb-12 p-6 bg-white/20 dark:bg-slate-900/40 backdrop-blur-xl border border-white/40 dark:border-slate-700/50 p-6 rounded-[2.5rem] shadow-[0_8px_32px_0_rgba(31,38,135,0.07)] flex flex-col sm:flex-row items-center gap-6 max-w-md animate-in fade-in slide-in-from-bottom-4 delay-300 hover:-translate-y-1 hover:bg-white/30 transition-all duration-500">
+                                <div className="h-24 w-24 shrink-0 bg-white rounded-2xl p-2 shadow-sm border border-slate-50">
+                                    <div className="w-16 h-16 bg-brand-500 rounded-2xl flex items-center justify-center shrink-0">
+                                        <Coffee size={32} className="text-white" />
+                                    </div>
+                                </div>
+                                <div>
+                                    <h3 className="text-xs font-black text-brand-500 uppercase tracking-widest mb-1">Cafetería de calidad</h3>
+                                    <p className="text-xl font-bold text-slate-700 dark:text-slate-200 leading-tight">Acompañá tu helado con el mejor café expresso.</p>
+                                </div>
                             </div>
-                        </div>
+                        )}
 
                         <div className="flex flex-col sm:flex-row gap-8">
                             <div className="flex flex-col gap-4 flex-1">
-                                <a href="#/portal" className="px-8 py-5 bg-brand-500 text-white rounded-2xl font-black text-lg hover:bg-brand-600 transition-all flex items-center justify-center gap-3 shadow-xl shadow-brand-500/20 hover:-translate-y-1">
-                                    <Gift size={20} /> MIEMBROS CLUB
+                                <a href="#/portal" className="px-8 py-5 relative group overflow-hidden bg-gradient-to-r from-brand-500 to-brand-600 text-white rounded-2xl font-black text-lg hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-3 shadow-[0_20px_40px_rgba(244,63,94,0.3)] hover:shadow-[0_25px_50px_rgba(244,63,94,0.5)]">
+                                    <div className='absolute inset-0 w-full h-full bg-white/20 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-in-out skew-x-12'></div><Gift size={20} className='relative z-10' /> <span className='relative z-10'>MIEMBROS CLUB</span>
                                 </a>
                                 <div className="px-4 text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 dark:text-slate-500 space-y-1.5 leading-none">
                                     <p className="flex items-center gap-2"><Star size={10} className="text-brand-400" /> Cada compra suma.</p>
@@ -482,8 +533,8 @@ export default function LandingPage() {
                                     </div>
 
                                     {/* Badges */}
-                                    <div className="absolute -bottom-6 -left-6 bg-white dark:bg-slate-900 p-6 rounded-3xl shadow-2xl border border-slate-100 dark:border-slate-800 animate-bounce-slow flex items-center gap-4">
-                                        <div className="w-12 h-12 bg-brand-500 rounded-2xl flex items-center justify-center text-white font-black text-xl">25</div>
+                                    <div className="relative sm:absolute mt-8 sm:mt-0 sm:-bottom-6 sm:-left-6 bg-white dark:bg-slate-900 p-5 sm:p-6 rounded-3xl shadow-2xl border border-slate-100 dark:border-slate-800 animate-bounce-slow flex items-center justify-center gap-4 mx-auto sm:mx-0 w-max z-10">
+                                        <div className="w-12 h-12 bg-brand-500 rounded-2xl flex items-center justify-center text-white font-black text-xl shrink-0">25</div>
                                         <div>
                                             <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest leading-none mb-1">Años de</p>
                                             <p className="text-sm font-black text-slate-900 dark:text-white uppercase tracking-tighter leading-none">Trayectoria</p>
@@ -492,7 +543,7 @@ export default function LandingPage() {
                                 </div>
                             </div>
 
-                            <div className="mt-20 text-center">
+                            <div className="mt-12 sm:mt-20 text-center">
                                 <button
                                     onClick={() => { setViewNosotros(false); window.location.hash = '#/'; }}
                                     className="px-12 py-6 bg-slate-900 dark:bg-white text-white dark:text-slate-900 rounded-3xl font-black text-xl hover:scale-105 transition-all shadow-2xl active:scale-95"
@@ -838,7 +889,7 @@ export default function LandingPage() {
                 href={`https://wa.me/${socialLinks.whatsapp}?text=Hola!%20Vengo%20desde%20la%20web%20${tenant.systemName.replace(/ /g, "%20")}%20y%20quería%20hacer%20una%20consulta.`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="fixed bottom-6 right-6 sm:bottom-12 sm:right-12 z-[60] bg-[#25D366] text-white p-5 rounded-full shadow-[0_20px_40px_rgba(37,211,102,0.4)] hover:shadow-[0_25px_50px_rgba(37,211,102,0.6)] transition-all hover:-translate-y-3 group animate-in zoom-in duration-500"
+                className="fixed bottom-6 right-4 sm:bottom-12 sm:right-12 z-[60] bg-[#25D366] text-white p-3.5 sm:p-5 rounded-full shadow-[0_20px_40px_rgba(37,211,102,0.4)] hover:shadow-[0_25px_50px_rgba(37,211,102,0.6)] transition-all hover:-translate-y-3 group animate-in zoom-in duration-500"
                 title="Escribinos por WhatsApp"
             >
                 <div className="absolute inset-0 bg-[#25D366] rounded-full animate-ping opacity-25 group-hover:hidden"></div>
@@ -937,5 +988,6 @@ export default function LandingPage() {
                 </div>
             )}
         </div>
+        </>
     );
 }

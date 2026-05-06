@@ -7,7 +7,7 @@ export default function ThemeToggle() {
 
     // El usuario pidió que sea vertical (como un interruptor de pared o similar)
     return (
-        <div className="fixed right-4 top-1/2 -translate-y-1/2 z-[100] flex flex-col items-center gap-2">
+        <div className="fixed left-2 sm:left-auto sm:right-4 top-1/2 -translate-y-1/2 z-[100] flex flex-col items-center gap-2 scale-[0.8] sm:scale-100 origin-left sm:origin-right">
             <span className="text-[8px] font-black uppercase tracking-tighter text-slate-400 rotate-90 mb-4 origin-left">MODO</span>
 
             <button
