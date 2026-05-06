@@ -676,7 +676,7 @@ export default function LandingPage() {
                 <div className="absolute top-0 right-0 -translate-y-1/2 translate-x-1/2 w-[600px] h-[600px] bg-brand-500/5 rounded-full blur-[100px]"></div>
 
                 <div className="max-w-7xl mx-auto relative z-10">
-                    <div className="bg-brand-600 dark:bg-slate-900 rounded-[4rem] p-12 sm:p-24 text-white shadow-3xl overflow-hidden relative group">
+                    <div className="bg-brand-600 dark:bg-slate-900 rounded-[4rem] p-8 sm:p-24 text-white shadow-3xl overflow-hidden relative group">
                         <div className="absolute top-0 right-0 -translate-y-1/4 translate-x-1/4 w-[500px] h-[500px] bg-white/10 rounded-full blur-[80px]"></div>
 
                         <div className="relative z-10 flex flex-col md:flex-row items-center gap-16">
@@ -684,10 +684,10 @@ export default function LandingPage() {
                                 <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-md px-4 py-1.5 rounded-full text-[10px] font-black tracking-widest uppercase mb-8">
                                     💎 BENEFICIOS EXCLUSIVOS
                                 </div>
-                                <h1 className="text-7xl sm:text-8xl font-black mb-10 tracking-tighter leading-[0.85] uppercase">
+                                <h1 className="text-5xl sm:text-8xl font-black mb-6 sm:mb-10 tracking-tighter leading-[0.85] uppercase">
                                     SEITU<span className="text-amber-300">CLUB</span>
                                 </h1>
-                                <h2 className="text-2xl sm:text-3xl font-bold mb-8 leading-tight">
+                                <h2 className="text-xl sm:text-3xl font-bold mb-4 sm:mb-8 leading-tight">
                                     Convertí tus compras en helado gratis
                                 </h2>
                                 <p className="text-lg text-white/80 font-medium mb-12 max-w-xl leading-relaxed">
