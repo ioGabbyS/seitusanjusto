@@ -389,6 +389,7 @@ export default function POS() {
             setPointsToRedeem(0);
             setShouldInvoiceFiscal(false);
             setCustomerMode("club"); // Reset to default
+            setGuestName('');
 
             console.log("handleCheckout COMPLETED successfully");
         } catch (error) {

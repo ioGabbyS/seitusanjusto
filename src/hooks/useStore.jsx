@@ -1553,10 +1553,26 @@ function useStoreSource() {
 
     const deleteSale = async (saleId) => {
         if (!confirm('¿Borrar VENTA? Afectará al arqueo.')) return;
+
+        const saleToDelete = sales.find(s => s.id === saleId);
+        
         const newSales = sales.filter(s => s.id !== saleId);
         setSales(newSales);
         safeStorageSet('seitu_sales', JSON.stringify(newSales));
         if (supabase) await supabase.from('sales').delete().eq('id', saleId);
+
+        if (saleToDelete) {
+            const auditMsg = `Venta eliminada: Orden #${saleToDelete.orderNumber || saleToDelete.id.substring(0,6)} por $${saleToDelete.totalAmount || saleToDelete.total || 0}`;
+            addAuditEntry('SALE_DELETED', auditMsg);
+            
+            const currentActiveSession = sessions.find(s => !s.endedAt) || null;
+            if (currentActiveSession) {
+                const currentNotes = currentActiveSession.notes || '';
+                const timeStr = new Date().toLocaleTimeString();
+                const newNotes = currentNotes + `\n[${timeStr}] ⚠️ ${auditMsg}`;
+                updateActiveSession({ notes: newNotes.trim() });
+            }
+        }
     };
 
 
@@ -2798,10 +2814,12 @@ function useStoreSource() {
                 const alreadyIncluded = cleanCatalog.some(c => c.id === item.id);
                 if (alreadyIncluded) return;
 
-                const isPersonalized = item.category === "PERSONALIZADOS" || item.category === "PERSONALIZADO";
+                const isPersonalized = item.category?.toUpperCase().includes("PERSONALIZAD");
                 const isCafeteria = item.category?.toUpperCase().includes("CAFETER") || item.category?.toUpperCase().includes("PROMOS");
+                const isInsumo = item.category?.toUpperCase().includes("INSUMO");
+                const isPalito = item.category?.toUpperCase().includes("PALITO") || item.category?.toUpperCase().includes("SEIBOM") || item.category?.toUpperCase().includes("SEIBON");
 
-                if (isPersonalized || isCafeteria) {
+                if (isPersonalized || isCafeteria || isInsumo || isPalito) {
                     cleanCatalog.push(item);
                 } else {
                     // It's a rogue ice cream or unknown item
