@@ -4,8 +4,8 @@ import { createClient } from '@supabase/supabase-js';
 const isSanJusto = typeof window !== 'undefined' && (window.location.hostname.includes('sanjusto') || window.location.hostname.includes('seitu-fiel') || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
 
 // URL y KEY de San Justo (Detectadas como funcionales)
-const sanJustoUrl = import.meta.env.VITE_SUPABASE_URL || 'https://adkdesaeysijbgmiyywj.supabase.co';
-const sanJustoKey = import.meta.env.VITE_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFka2Rlc2FleXNpamJnbWl5eXdqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc1MjEwOTcsImV4cCI6MjA5MzA5NzA5N30.eVN9Ooae5NFnJ0zs-D0Ln42wFidKQjz-V1Mh93nGRh8';
+const sanJustoUrl = 'https://adkdesaeysijbgmiyywj.supabase.co';
+const sanJustoKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFka2Rlc2FleXNpamJnbWl5eXdqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc1MjEwOTcsImV4cCI6MjA5MzA5NzA5N30.eVN9Ooae5NFnJ0zs-D0Ln42wFidKQjz-V1Mh93nGRh8';
 
 // URL y KEY de Castillo (Fallback)
 const castilloUrl = 'https://qoxmjecahsauiccpmksa.supabase.co';

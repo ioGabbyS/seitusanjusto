@@ -182,12 +182,6 @@ export default function PointsCatalog({ rewards, addReward, updateReward, delete
                                         <span className="text-xs text-slate-400 font-bold">Subir Foto</span>
                                     </>
                                 )}
-                                <input
-                                    type="text"
-                                    className="hidden"
-                                    value={formData.image}
-                                    readOnly
-                                />
                                 {/* Simple URL Input fallback or file reader? Let's use URL for now as per plan "Add an 'Image URL' input field", BUT user said "agregar productos... y que se vean... como se podria hacer?" and previous conversation used base64. Let's stick to Base64 for consistency with Catalog, using a hidden file input */}
                                 <input
                                     type="file"
