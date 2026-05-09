@@ -7,7 +7,7 @@ export const tenant = {
     shortName: 'SAN JUSTO',
     location: 'San Justo',
     franchiseName: 'Sei Tu San Justo',
-    address: 'Av. Pte. Dr. A. U. Illia 2467',
+    address: 'Arturo Illia 2467',
     city: 'San Justo, Provincia de Buenos Aires',
     domain: 'seitusanjusto.vercel.app',
     systemName: 'SeiTu San Justo',
@@ -17,9 +17,9 @@ export const tenant = {
     establishedYear: '2026',
     adminEmail: 'seitusanjusto@gmail.com',
     social: {
-        instagram: 'seitu_san_justo',
-        tiktok: 'seitu_san_justo',
-        facebook: 'seitu_san_justo',
+        instagram: 'seitu_sanjusto',
+        tiktok: 'seitu_sanjusto',
+        facebook: 'seitu_sanjusto',
         whatsapp: '541171579903',
         googleMaps: 'https://maps.app.goo.gl/zSaNgdcJkGRP49N26'
     },

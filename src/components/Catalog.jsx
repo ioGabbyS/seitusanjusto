@@ -24,6 +24,7 @@ export default function Catalog() {
 
     const isEditing = editingId !== null;
     const [fileError, setFileError] = useState(null);
+    const [uploadingId, setUploadingId] = useState(null);
 
     const [newItem, setNewItem] = useState({
         name: '', barcode: '', category: categories[0] || 'General',
@@ -31,24 +32,40 @@ export default function Catalog() {
         image: '', bonusPoints: 0, pointsEarnedRatio: 1
     });
 
-    const resizeImage = (base64Str, maxWidth = 200, maxHeight = 200) => {
+    const compressImage = async (file, maxMB = 1) => {
+        // If file is already small enough, just return it
+        if (file.size <= maxMB * 1024 * 1024) return file;
+        
         return new Promise((resolve) => {
-            const img = new Image();
-            img.src = base64Str;
-            img.onload = () => {
-                const canvas = document.createElement('canvas');
-                let width = img.width;
-                let height = img.height;
-                if (width > height) {
-                    if (width > maxWidth) { height *= maxWidth / width; width = maxWidth; }
-                } else {
-                    if (height > maxHeight) { width *= maxHeight / height; height = maxHeight; }
-                }
-                canvas.width = width;
-                canvas.height = height;
-                const ctx = canvas.getContext('2d');
-                ctx.drawImage(img, 0, 0, width, height);
-                resolve(canvas.toDataURL('image/jpeg', 0.7));
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = (event) => {
+                const img = new Image();
+                img.src = event.target.result;
+                img.onload = () => {
+                    const canvas = document.createElement('canvas');
+                    const MAX_WIDTH = 1000;
+                    const MAX_HEIGHT = 1000;
+                    let width = img.width;
+                    let height = img.height;
+
+                    if (width > height) {
+                        if (width > MAX_WIDTH) { height *= MAX_WIDTH / width; width = MAX_WIDTH; }
+                    } else {
+                        if (height > MAX_HEIGHT) { width *= MAX_HEIGHT / height; height = MAX_HEIGHT; }
+                    }
+
+                    canvas.width = width;
+                    canvas.height = height;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, width, height);
+                    
+                    canvas.toBlob((blob) => {
+                        if (!blob) return resolve(file);
+                        const newFile = new File([blob], file.name.replace(/\.[^/.]+$/, "") + ".jpg", { type: 'image/jpeg' });
+                        resolve(newFile);
+                    }, 'image/jpeg', 0.8);
+                };
             };
         });
     };
@@ -56,8 +73,24 @@ export default function Catalog() {
     const handleImageUpload = async (e, targetStateSetter, currentData) => {
         const file = e.target.files[0];
         if (!file) return;
-        const publicUrl = await uploadImage(file);
+        const compressedFile = await compressImage(file, 1); // Compress if > 1MB
+        const publicUrl = await uploadImage(compressedFile);
         if (publicUrl) targetStateSetter({ ...currentData, image: publicUrl });
+    };
+
+    const handleInlineImageUpload = async (e, item) => {
+        const file = e.target.files[0];
+        if (!file) return;
+        setUploadingId(item.id);
+        try {
+            const compressedFile = await compressImage(file, 1); // Compress if > 1MB
+            const publicUrl = await uploadImage(compressedFile);
+            if (publicUrl) {
+                updateCatalogItem(item.id, { image: publicUrl });
+            }
+        } finally {
+            setUploadingId(null);
+        }
     };
 
     const filtered = catalog.filter(item => {
@@ -229,9 +262,24 @@ export default function Catalog() {
                                 filtered.map((item) => (
                                     <tr key={item.id} className="hover:bg-slate-50/50 dark:hover:bg-slate-800/50 transition-colors">
                                         <td className="px-4 py-3">
-                                            <div className="w-10 h-10 bg-slate-100 dark:bg-slate-800 rounded flex items-center justify-center overflow-hidden">
-                                                {item.image ? <img src={item.image} alt={item.name} className="w-full h-full object-cover" /> : <span className="text-[10px] text-slate-300 dark:text-slate-600 font-bold">Sin Foto</span>}
-                                            </div>
+                                            <label className="relative cursor-pointer group flex items-center justify-center w-10 h-10 bg-slate-100 dark:bg-slate-800 rounded overflow-hidden border border-transparent hover:border-indigo-400 transition-colors" title="Cambiar Foto">
+                                                {uploadingId === item.id ? (
+                                                    <span className="animate-spin w-4 h-4 border-2 border-indigo-500 border-t-transparent rounded-full"></span>
+                                                ) : item.image ? (
+                                                    <>
+                                                        <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
+                                                        <div className="absolute inset-0 bg-black/50 hidden group-hover:flex items-center justify-center transition-all">
+                                                            <UploadCloud className="w-4 h-4 text-white" />
+                                                        </div>
+                                                    </>
+                                                ) : (
+                                                    <div className="flex flex-col items-center">
+                                                        <UploadCloud className="w-4 h-4 text-slate-300 group-hover:text-indigo-400 mb-0.5" />
+                                                        <span className="text-[7px] text-slate-400 font-bold leading-none uppercase">Foto</span>
+                                                    </div>
+                                                )}
+                                                <input type="file" accept="image/*" className="hidden" onChange={(e) => handleInlineImageUpload(e, item)} disabled={uploadingId === item.id} />
+                                            </label>
                                         </td>
                                         <td className="px-4 py-3 text-center">
                                             <span className={`text-[10px] font-mono font-bold px-1.5 py-0.5 rounded ${item.id?.toString().match(/^\d+$/) ? 'bg-indigo-50 text-indigo-600' : 'bg-red-50 text-red-400'}`}>
@@ -326,6 +374,15 @@ export default function Catalog() {
                         </div>
                         <form onSubmit={handleAddItem} className="space-y-6">
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div className="md:col-span-2 flex items-center gap-4 bg-slate-50 dark:bg-slate-800/50 p-4 rounded-xl border border-slate-100 dark:border-slate-700">
+                                    <div className="w-16 h-16 bg-white dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-700 flex items-center justify-center overflow-hidden shrink-0">
+                                        {newItem.image ? <img src={newItem.image} className="w-full h-full object-cover" /> : <UploadCloud className="w-6 h-6 text-slate-300" />}
+                                    </div>
+                                    <div className="flex-1">
+                                        <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">Foto del Producto (Opcional)</label>
+                                        <input type="file" accept="image/*" onChange={(e) => handleImageUpload(e, setNewItem, newItem)} className="text-sm text-slate-500 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-indigo-100 file:text-indigo-700 hover:file:bg-indigo-200 dark:file:bg-indigo-900/30 dark:file:text-indigo-400 cursor-pointer w-full" />
+                                    </div>
+                                </div>
                                 <div className="md:col-span-2">
                                     <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Nombre del Producto</label>
                                     <input type="text" required value={newItem.name} onChange={(e) => setNewItem({ ...newItem, name: e.target.value.toUpperCase() })} className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-700 rounded-xl outline-none focus:ring-2 focus:ring-indigo-500" />
