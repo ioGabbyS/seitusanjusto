@@ -971,8 +971,11 @@ function useStoreSource() {
                         image: r.image
                     }));
 
-                    setRewards(mapped);
-                    safeStorageSet(STORAGE_KEYS.REWARDS, JSON.stringify(mapped));
+                    setRewards(prev => {
+                        const merged = mergeCloud(prev, mapped);
+                        safeStorageSet(STORAGE_KEYS.REWARDS, JSON.stringify(merged));
+                        return merged;
+                    });
                     console.log(`🎁 Premios sincronizados: ${mapped.length}`);
                 }
             } catch (e) {
