@@ -821,7 +821,7 @@ export default function LandingPage() {
                             <div>
                                 <h4 className="text-white font-black text-xs uppercase tracking-[0.2em] mb-6">Ubicación</h4>
                                 <p className="text-sm text-sky-400/80 leading-relaxed mb-6">
-                                    Carlos Casares 776<br />
+                                    {tenant.address}<br />
                                     {tenant.location}<br />
                                     Buenos Aires, Argentina
                                 </p>
@@ -832,8 +832,7 @@ export default function LandingPage() {
                             <div>
                                 <h4 className="text-white font-black text-xs uppercase tracking-[0.2em] mb-6">Horarios</h4>
                                 <p className="text-sm text-sky-400/80 leading-relaxed">
-                                    ¡Abierto todos los días del año!<br />
-                                    08:00 AM - 24:00 HS
+                                    Lunes a Jueves: 09:00 a 21:00<br />Viernes y Sábados: 09:00 a 23:00<br />Domingos: 10:00 a 20:00
                                 </p>
                             </div>
                         </div>
