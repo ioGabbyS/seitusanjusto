@@ -56,7 +56,7 @@ export default async function handler(req, res) {
             email,
             points: 0,
             history: [],
-            createdAt: new Date().toISOString()
+            created_at: new Date().toISOString()
         };
 
         const { data, error: insertError } = await supabase
