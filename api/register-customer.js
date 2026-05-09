@@ -26,7 +26,7 @@ export default async function handler(req, res) {
     }
 
     // 2. Conexión SEGURA con Supabase (Usando Service Role para saltar RLS)
-    const supabaseUrl = process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL || 'https://adkdesaexsijbgmiywwj.supabase.co';
+    const supabaseUrl = process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL || 'https://adkdesaeysijbgmiyywj.supabase.co';
     const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
     if (!supabaseKey) {
