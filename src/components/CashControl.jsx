@@ -1012,9 +1012,13 @@ const ActiveTurnView = ({
 
         if (!window.confirm(confirmMsg)) return;
 
+        const finalNotes = (activeSession.auditLogs && activeSession.auditLogs.length > 0)
+            ? `${notes}\n\n=== AUDITORÍA ===\n${activeSession.auditLogs.join('\n')}`
+            : notes;
+
         const closureData = {
             declaredTotal,
-            notes,
+            notes: finalNotes,
             salesCount: currentSales.length,
             difference,
             expectedCash,
@@ -1334,6 +1338,14 @@ const ActiveTurnView = ({
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
                             <div>
                                 <label className="block text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase mb-1.5 tracking-wide">Notas del Cierre</label>
+                                {activeSession.auditLogs && activeSession.auditLogs.length > 0 && (
+                                    <div className="mb-2 max-h-24 overflow-y-auto bg-red-50 dark:bg-red-900/10 p-2 rounded-lg border border-red-200 dark:border-red-900/30 select-none">
+                                        <div className="text-[10px] font-bold text-red-800 dark:text-red-400 mb-1 uppercase">Registro de Auditoría (No Borrable)</div>
+                                        {activeSession.auditLogs.map((log, i) => (
+                                            <div key={i} className="text-[11px] font-mono text-slate-700 dark:text-slate-300">{log}</div>
+                                        ))}
+                                    </div>
+                                )}
                                 <textarea
                                     value={notes}
                                     onChange={e => setNotes(e.target.value)}

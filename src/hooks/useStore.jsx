@@ -1570,10 +1570,9 @@ function useStoreSource() {
             
             const currentActiveSession = sessions.find(s => !s.endedAt) || null;
             if (currentActiveSession) {
-                const currentNotes = currentActiveSession.notes || '';
+                const currentLogs = currentActiveSession.auditLogs || [];
                 const timeStr = new Date().toLocaleTimeString();
-                const newNotes = currentNotes + `\n[${timeStr}] ⚠️ ${auditMsg}`;
-                updateActiveSession({ notes: newNotes.trim() });
+                updateActiveSession({ auditLogs: [...currentLogs, `[${timeStr}] ⚠️ ${auditMsg}`] });
             }
         }
     };
